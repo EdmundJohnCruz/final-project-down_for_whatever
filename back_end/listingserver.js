@@ -30,7 +30,7 @@ dbClient.connect((error) => {
     listingCollection.find({})
     .toArray()
     .then((docs) => {
-        res.send(docs)
+        res.send({listings: docs})
     })
     .catch((e) => {
         console.log("error: ", e);
