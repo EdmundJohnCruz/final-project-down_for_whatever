@@ -40,7 +40,7 @@ dbClient.connect((error) => {
   
   app.post('/listing', (req, res) => {
     const newListing = req.body.listing;
-    newListing.timestamp = Date.now();
+    newListing.timestamp = new Date();
     listingCollection.insertOne(newListing, (err, dbRes) => {
       if(err) {
         console.log('error! can\'t insert newListing');
