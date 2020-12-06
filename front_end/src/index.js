@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Home from './pages/Home';
+import SignUp from './pages/SignUp';
 import { createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './redux/reducers/rootReducer';
@@ -21,6 +23,14 @@ ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter>
+      <Switch>
+        <Route path="/home">
+          <Home />
+        </Route>  
+        <Route path="/signup">
+          <SignUp />
+        </Route>
+      </Switch>
       </BrowserRouter>
     </React.StrictMode>
   </Provider>,
