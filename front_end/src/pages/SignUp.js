@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 
 const signupAuth = () => {
@@ -53,3 +54,4 @@ const SignUp = () => {
 }
 
 export default SignUp;
+*/

@@ -15,22 +15,34 @@ const Home = () => {
     return (
         <div>
             <Navbar bg="light" expand="lg" sticky="top">
-                <Navbar.Brand>Ghetto eBay</Navbar.Brand>
+                <Navbar.Brand>Ghetto eBaytest</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
+                    <Nav>
                         <NavDropdown title="Create Post" id="basic-nav-dropdown">
+                        Insert listingCreationForm.js here
                         </NavDropdown>
                         <Form inline>
-                            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                            <FormControl type="text" placeholder="Search" />
                             <Button variant="outline-success">Search</Button>
                         </Form>
+                        </Nav>
+                        <div className="justify-content-end">
+                        <Nav>
                         <NavDropdown title="Log In" id="basic-nav-dropdown">
-                            <NavDropdown.Item>Log In</NavDropdown.Item>
-                            
-                            <NavDropdown.Item href="/signup">Need An Account?</NavDropdown.Item>
+                            <NavDropdown.Item></NavDropdown.Item>
+                            <Form inline>
+                                <div className="text-center">
+                                Username:
+                                <FormControl type="text" placeholder="Username" />
+                                Password:
+                                <FormControl type="text" placeholder="Password" />
+                                </div>
+                            </Form>
+                            <NavDropdown.Item href="/signup" className="text-center">Need An Account?</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
+                    </div>
                 </Navbar.Collapse>
             </Navbar>
         </div>
