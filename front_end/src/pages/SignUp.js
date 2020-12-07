@@ -1,4 +1,10 @@
+/*
 import React from 'react';
+
+const [username, setUsername] = React.useState('');
+const [password, setPassword] = React.useState('');
+const [error, setError] = React.useState('');
+
 
 const signupAuth = () => {
     const body = {
@@ -49,7 +55,8 @@ const SignUp = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default SignUp;
+*/

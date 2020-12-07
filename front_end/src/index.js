@@ -1,19 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Home from './pages/Home';
-import SignUp from './pages/SignUp';
 import { createStore, applyMiddleware } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './redux/reducers/rootReducer';
 import thunk from 'redux-thunk';
+import App from './App.js';
 import './App.css';
-
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 
@@ -23,14 +17,7 @@ ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter>
-      <Switch>
-        <Route path="/home">
-          <Home />
-        </Route>  
-        <Route path="/signup">
-          <SignUp />
-        </Route>
-      </Switch>
+        <App/>
       </BrowserRouter>
     </React.StrictMode>
   </Provider>,
