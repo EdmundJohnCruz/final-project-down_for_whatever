@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CurrencyInput from 'react-currency-input-field'
+//import CurrencyInput from 'react-currency-input-field'
 const axios = require('axios');
 
 class ListingCreationForm extends Component {

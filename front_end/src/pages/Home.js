@@ -23,35 +23,33 @@ const Home = () => {
     console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Username is : ${userName} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
     return (
         <div>
-            <Navbar class="text-center" bg="light" expand="lg" sticky="top">
-                <Navbar.Brand>Ghetto eBaytest</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav>
+            <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
+                <Navbar.Brand color="white">Ghetto eBay</Navbar.Brand>
+                <Navbar.Toggle />
+                <Navbar.Collapse>
+                    <Nav className="justify-content-start mr-auto">
                         <NavDropdown title="Create Post" id="basic-nav-dropdown">
                         Insert listingCreationForm.js here
                         </NavDropdown>
                         <Form inline>
                             <FormControl type="text" placeholder="Search" />
-                            <Button variant="outline-success">Search</Button>
+                            <Button variant="secondary">Search</Button>
                         </Form>
                         </Nav>
-                        <div className="justify-content-end">
-                        <Nav>
-                        <NavDropdown title="Log In" id="basic-nav-dropdown">
-                            <NavDropdown.Item></NavDropdown.Item>
+                        <Nav className="justify-content-end ml-auto">
+                        <NavDropdown alignRight title="Log In" id="dropdown-menu-" menuAlign="right">
                             <Form inline>
                                 <div className="text-center">
                                 Username:
                                 <FormControl type="text" placeholder="Username" />
                                 Password:
                                 <FormControl type="text" placeholder="Password" />
+                                <Button className="justify-content-center">Log In</Button>
                                 </div>
                             </Form>
                             <NavDropdown.Item href="/signup" className="text-center">Need An Account?</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    </div>
                 </Navbar.Collapse>
             </Navbar>
             <div className= "testing-redux">
