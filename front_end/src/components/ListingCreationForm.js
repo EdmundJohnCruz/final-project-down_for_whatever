@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-//import CurrencyInput from 'react-currency-input-field'
+import CurrencyInput from 'react-currency-input-field'
 const axios = require('axios');
 
 class ListingCreationForm extends Component {
@@ -22,15 +22,16 @@ class ListingCreationForm extends Component {
         });
     };
 
-    onPriceChange = e => {
+    onPriceChange = (value) => {
         this.setState({
-            price: e.target.value
+            price: value
         });
     };
 
     handleSubmit = e => {
         e.preventDefault();
         const data = {
+            userid: 'placeholder',
             title: this.state.title,
             description: this.state.description,
             price: this.state.price,
@@ -50,7 +51,7 @@ class ListingCreationForm extends Component {
                     <h1>Create a New Listing</h1>
                     <input placeholder="Title" value={this.state.title} onChange={this.onTitleChange} required />
                     <textarea placeholder="Description" value={this.state.description} onChange={this.onDescriptionChange} required/>
-                    <input placeholder="$0.00 (Price)" value={this.state.price} onChange={this.onPriceChange} required />
+                    <CurrencyInput placeholder="$0.00" allowDecimals={true} prefix={'$'} precision={2} allowNegativeValue={false} onChange={(value) => this.onPriceChange(value)} required/>
                     <button type="submit">Create Listing</button>
                 </form>
             </div>

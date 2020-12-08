@@ -23,17 +23,6 @@ const Home = () => {
     const listings = useSelector(state => state.listingReducer.listings);
     const dispatch = useDispatch();
 
-
-    console.log('listings: ', listings);
-
-    const getListings = () => {
-        axios.get('/.....')
-        .then( (res) => {
-            
-        })
-        dispatch( setListings(['hello', 'world']) );
-    };
-    React.useEffect(getListings ,[]);
     
 
     console.log("Someone logged in? "+ isLoggedIn);
