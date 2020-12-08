@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import CurrencyInput from 'react-currency-input-field'
 const axios = require('axios');
 
+const url = "http://locahost:4001";
+
 class ListingCreationForm extends Component {
     state = {
         title: "",
@@ -35,15 +37,14 @@ class ListingCreationForm extends Component {
             title: this.state.title,
             description: this.state.description,
             price: this.state.price,
+            userid: 'placeholder',
         }
         console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
-        axios.post("/listings", {listing: data})
+        axios.post(url+"/listings", {listing: data})
             .then(res => console.log(res))
             .catch(err => console.log(err));
     };
-//  <input pattern="\d+((\.)\d+)" placeholder="$0.00 (Price)" value={this.state.price} onChange={this.onPriceChange} required />
-//  can't get this working for now, use one or the other
-//  <CurrencyInput placeholder="$0.00" allowDecimals={true} prefix={'$'} precision={2} allowNegativeValue={false} onChangeEvent={(value) => console.log(`price : ${value}`)} required/>
+    
     render() {
         return (
             <div className="ListingCreationForm">
