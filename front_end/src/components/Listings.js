@@ -24,7 +24,7 @@ const Listings = () => {
 
   return (
     <div>
-      <h1>Listings</h1>
+      <h1>Listings :</h1>
       {listings.map( (x,i) => (
         <GetListings listing={x} />
       ))}
