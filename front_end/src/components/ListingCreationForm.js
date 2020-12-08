@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-//import CurrencyInput from 'react-currency-input-field'
+import CurrencyInput from 'react-currency-input-field'
 const axios = require('axios');
 
 class ListingCreationForm extends Component {
@@ -22,9 +22,9 @@ class ListingCreationForm extends Component {
         });
     };
 
-    onPriceChange = e => {
+    onPriceChange = (value) => {
         this.setState({
-            price: e.target.value
+            price: value
         });
     };
 
@@ -34,15 +34,14 @@ class ListingCreationForm extends Component {
             title: this.state.title,
             description: this.state.description,
             price: this.state.price,
+            userid: 'placeholder',
         }
         console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
-        axios.post("/listings", {listing: data})
+        axios.post("/api/listings", {listing: data})
             .then(res => console.log(res))
             .catch(err => console.log(err));
     };
-//  <input pattern="\d+((\.)\d+)" placeholder="$0.00 (Price)" value={this.state.price} onChange={this.onPriceChange} required />
-//  can't get this working for now, use one or the other
-//  <CurrencyInput placeholder="$0.00" allowDecimals={true} prefix={'$'} precision={2} allowNegativeValue={false} onChangeEvent={(value) => console.log(`price : ${value}`)} required/>
+    
     render() {
         return (
             <div className="ListingCreationForm">
@@ -50,7 +49,7 @@ class ListingCreationForm extends Component {
                     <h1>Create a New Listing</h1>
                     <input placeholder="Title" value={this.state.title} onChange={this.onTitleChange} required />
                     <textarea placeholder="Description" value={this.state.description} onChange={this.onDescriptionChange} required/>
-                    <input placeholder="$0.00 (Price)" value={this.state.price} onChange={this.onPriceChange} required />
+                    <CurrencyInput placeholder="$0.00" allowDecimals={true} prefix={'$'} precision={2} allowNegativeValue={false} onChange={(value) => this.onPriceChange(value)} required/>
                     <button type="submit">Create Listing</button>
                 </form>
             </div>
