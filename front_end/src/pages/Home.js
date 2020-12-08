@@ -3,6 +3,7 @@ import React from 'react';
 /*Listing Imports*/
 import ListingCreationForm from '../components/ListingCreationForm';
 import Listings from '../components/Listings';
+import GetListinga from '../components/GetListings';
 /*Bootstrap Imports*/
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -62,6 +63,7 @@ const Home = () => {
                 <p>Is there someone logged in? {isLoggedIn} </p>
                 <h1>This is who's on: {userName}</h1>
             </div>
+            <Listings/>
         </div>
     )
 }
