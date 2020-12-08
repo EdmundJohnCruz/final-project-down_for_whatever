@@ -14,11 +14,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /*Redux Imports*/
 import {useSelector, useDispatch} from 'react-redux';
 import {setUserName, setIsLoggedIn } from '../redux/actions/userActions';
+import {setListings} from '../redux/actions/listingActions';
 
 const Home = () => {
     /*Redux variables*/
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
     const userName = useSelector(state => state.userReducer.userName);
+    const listings = useSelector(state => state.listingReducer.listings);
+    const dispatch = useDispatch();
+
+
+    console.log('listings: ', listings);
+
+    const getListings = () => {
+        axios.get('/.....')
+        .then( (res) => {
+            
+        })
+        dispatch( setListings(['hello', 'world']) );
+    };
+    React.useEffect(getListings ,[]);
+    
+
     console.log("Someone logged in? "+ isLoggedIn);
     console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Username is : ${userName} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
     return (
