@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import CurrencyInput from 'react-currency-input-field'
 const axios = require('axios');
 
+const url = "http://locahost:4001";
+
 class ListingCreationForm extends Component {
     state = {
         title: "",
@@ -37,7 +39,7 @@ class ListingCreationForm extends Component {
             userid: 'placeholder',
         }
         console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
-        axios.post("/api/listings", {listing: data})
+        axios.post(url+"/listings", {listing: data})
             .then(res => console.log(res))
             .catch(err => console.log(err));
     };
