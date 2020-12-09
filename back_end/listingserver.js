@@ -26,7 +26,7 @@ dbClient.connect((error) => {
   const listingCollection = db.collection(listingCollectionName);
 
 
-  app.get('/listings', (req, res) => {
+  app.get('/api/listingserver/listings', (req, res) => {
     listingCollection.find({})
     .toArray()
     .then((docs) => {
@@ -38,7 +38,7 @@ dbClient.connect((error) => {
     });
   });
   
-  app.post('/listing', (req, res) => {
+  app.post('/api/listingserver/listing', (req, res) => {
     const newListing = req.body.listing;
     newListing.timestamp = new Date();
     listingCollection.insertOne(newListing, (err, dbRes) => {
@@ -54,5 +54,5 @@ dbClient.connect((error) => {
     });
   });
 
-  app.listen(4001, () => console.log('App listening on port 4001'));
+  app.listen(5000, () => console.log('App listening on port 5000'));
 });
