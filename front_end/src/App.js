@@ -9,6 +9,9 @@ import ListingCreationForm from './components/ListingCreationForm'
 const App = () => {
     return (
         <Switch>
+            <Route path="/">
+                <Home />
+            </Route>
             <Route path="/home">
                 <Home />
             </Route>

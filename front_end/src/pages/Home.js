@@ -3,6 +3,7 @@ import React from 'react';
 /*Listing Imports*/
 import ListingCreationForm from '../components/ListingCreationForm';
 import Listings from '../components/Listings';
+import Login from '../components/Login';
 import GetListings from '../components/GetListings';
 /*Bootstrap Imports*/
 import Navbar from 'react-bootstrap/Navbar';
@@ -11,7 +12,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
-import { Modal } from 'react-bootstrap'; 
+import { Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 /*Redux Imports*/
 import { useSelector, useDispatch } from 'react-redux';
@@ -27,9 +28,8 @@ const Home = () => {
 
     const [lcfmodalShow, setlcfModalShow] = React.useState(false);
     const [loginmodalShow, setloginModalShow] = React.useState(false);  //  not implemented yet
+    const [navSignInButtonTitle, setnavSignInButtonTitle] = React.useState("Log In");
 
-    console.log("Someone logged in? " + isLoggedIn);
-    console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Username is : ${userName} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
     return (
         <div>
             <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
@@ -37,27 +37,15 @@ const Home = () => {
                 <Navbar.Toggle />
                 <Navbar.Collapse>
                     <Nav className="justify-content-start mr-auto">
-                        <NavDropdown title="Create Post" id="basic-nav-dropdown">
-                            <ListingCreationForm />
-                        </NavDropdown>
-                        <Nav.Link onClick={() => setlcfModalShow(true)}>Create Post</Nav.Link>
+                        <Nav.Link title="Create Post" onClick={() => setlcfModalShow(true)}>Create Post&nbsp;</Nav.Link>
                         <Form inline>
                             <FormControl type="text" placeholder="Search" />
                             <Button variant="secondary">Search</Button>
                         </Form>
                     </Nav>
                     <Nav className="justify-content-end ml-auto">
-                        <NavDropdown alignRight title="Log In" id="dropdown-menu-" menuAlign="right">
-                            <Form inline>
-                                <div className="text-center">
-                                    Username:
-                                <FormControl type="text" placeholder="Username" />
-                                Password:
-                                <FormControl type="text" placeholder="Password" />
-                                    <Button className="justify-content-center">Log In</Button>
-                                </div>
-                            </Form>
-                            <NavDropdown.Item href="/signup" className="text-center">Need An Account?</NavDropdown.Item>
+                        <NavDropdown alignRight title={navSignInButtonTitle} id="dropdown-menu-" menuAlign="right">
+                            <LoginOrSignout />
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
@@ -65,38 +53,55 @@ const Home = () => {
 
             <ListingCreationFormModal show={lcfmodalShow} onHide={() => setlcfModalShow(false)} />
 
-            <div className="testing-redux">
-                <p>Is there someone logged in? {isLoggedIn} </p>
-                <h1>This is who's on: {userName}</h1>
-            </div>
             <Listings />
         </div>
     )
-}
 
-function ListingCreationFormModal(props) {
-    const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
-    if (!isLoggedIn) {
-        return (
-            <Modal {...props} size="lg" centered>
-                <Modal.Header closeButton>
-                    <Modal.Body>
-                        <ListingCreationForm />
-                    </Modal.Body>
-                </Modal.Header>
-            </Modal>
-        )
-    } else {
-        return (
-            <Modal {...props} size="lg" centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        You must be logged in to create a post.
+    function LoginOrSignout() {
+        if (!isLoggedIn) {
+            setnavSignInButtonTitle("Log In");
+            return (
+                <div>
+                    <Login />
+                    <NavDropdown.Item href="/signup" className="text-center">Need An Account?</NavDropdown.Item>
+                </div>
+            )
+        } else {
+            setnavSignInButtonTitle("Account");
+            return (
+                <div className="text-center">
+                    <NavDropdown.Item >Welcome : {userName}</NavDropdown.Item>
+                    <NavDropdown.Item >My Listings</NavDropdown.Item>
+                    <NavDropdown.Item >Inquiries</NavDropdown.Item>
+                    <Button onClick={() => {dispatch(setIsLoggedIn(false));dispatch(setUserName("Signed Out"))}}>Sign Out</Button>
+                </div>
+            )
+        }
+    };
+
+    function ListingCreationFormModal(props) {
+        if (isLoggedIn) {
+            return (
+                <Modal {...props} size="lg" centered>
+                    <Modal.Header closeButton>
+                        <Modal.Body>
+                            <ListingCreationForm />
+                        </Modal.Body>
+                    </Modal.Header>
+                </Modal>
+            )
+        } else {
+            return (
+                <Modal {...props} size="lg" centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>
+                            You must be logged in to create a post.
                     </Modal.Title>
-                </Modal.Header>
-            </Modal>
-        )
-    }
+                    </Modal.Header>
+                </Modal>
+            )
+        }
+    };
 };
 
 export default Home;

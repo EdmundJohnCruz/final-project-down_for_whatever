@@ -66,7 +66,7 @@ const ListingCreationForm = () => {
                     <Form.File type="image" label="Upload your image here" custom />
                 </Form.Group>
 
-                <button type="submit" class="btn btn-primary" >Create Listing</button>
+                <button type="submit" class="btn btn-primary float-right">Create Listing</button>
             </Form>
         </div>
     )
