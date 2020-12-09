@@ -1,9 +1,9 @@
 FROM node:10-alpine
 
 WORKDIR /main
-COPY ./backend/gateway.js /main
-COPY ./backend/package.json /main
-COPY ./backend/package-lock.json /main
+COPY ./back_end/gateway.js /main
+COPY ./back_end/package.json /main
+COPY ./back_end/package-lock.json /main
 
 RUN npm install
 
