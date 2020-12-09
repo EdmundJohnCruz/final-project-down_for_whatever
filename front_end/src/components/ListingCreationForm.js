@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { FormControl, InputGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
-const url = "http://localhost:4001/listing";
+const url = "/api/listingserver/listing";
 
 const ListingCreationForm = () => {
     const [title, setTitle] = React.useState();
