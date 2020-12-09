@@ -32,7 +32,7 @@ const SignUp = () => {
     return (
         <div>
             <h1>Signup</h1>
-            
+
             <div id="SignupBox">
                 <div id="username">
                     <input value={username}
