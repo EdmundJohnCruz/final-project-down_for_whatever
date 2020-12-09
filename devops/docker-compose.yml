@@ -1,5 +1,16 @@
 version: '3'
 services:
+  gateway:
+    image: dfw/gateway
+    ports:
+      - "4000:4000"
+    deploy:
+      replicas: 1
+    networks:
+      - webnet
+    environment:
+      - FRONT_END_HOST=http://frontend:3000
+      - LISTING_HOST=http://listingserver:5000
   zookeeper:
     image: wurstmeister/zookeeper
     ports:

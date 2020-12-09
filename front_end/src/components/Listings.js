@@ -8,7 +8,7 @@ const Listings = () => {
   const dispatch = useDispatch(); 
   const listings = useSelector(state => state.listingReducer.listings);
   const getListings = () => {
-    axios.get('http://localhost:4001/listings')
+    axios.get('/api/listingserver/listings')
     .then( (res) => {
       console.log(res.data)
         dispatch(setListings(res.data.listings));
