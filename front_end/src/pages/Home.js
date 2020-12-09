@@ -11,7 +11,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
-import { Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 /*Redux Imports*/
 import { useSelector, useDispatch } from 'react-redux';
@@ -76,7 +76,7 @@ const Home = () => {
 
 function ListingCreationFormModal(props) {
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
-    if (isLoggedIn) {
+    if (!isLoggedIn) {
         return (
             <Modal {...props} size="lg" centered>
                 <Modal.Header closeButton>

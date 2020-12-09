@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import { FormControl, InputGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-const axios = require('axios');
 
-const url = "http://locahost:4001";
+const url = "http://localhost:4001/listing";
 
 class ListingCreationForm extends Component {
     state = {
@@ -40,10 +40,11 @@ class ListingCreationForm extends Component {
             description: this.state.description,
             price: this.state.price,
         }
-        console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
-        axios.post(url+"/listings", {listing: data})
+        axios.post(url, {listing: data})
             .then(res => console.log(res))
             .catch(err => console.log(err));
+            
+        console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
     };
 
     render() {
