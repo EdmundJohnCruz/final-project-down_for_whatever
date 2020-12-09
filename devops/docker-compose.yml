@@ -21,7 +21,17 @@ services:
         condition: on-failure
     networks:
       - webnet
-    
+  listingserver:
+    image: dfw/listingserver
+    ports:
+      - "5000:5000"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+      
   # zookeeper:
   #   image: wurstmeister/zookeeper
   #   ports:
