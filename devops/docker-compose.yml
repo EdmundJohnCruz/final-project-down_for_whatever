@@ -37,7 +37,7 @@ services:
       - MONGO_AUTH=dfw:dfw123
     networks:
       - webnet
-  websocket:
+  websocketserver:
     image : dfw/websocketserver
     depends_on:
       - redis
