@@ -4,8 +4,10 @@ const client = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' 
 
 const wss = new WebSocket.Server({ port: 6000 });
 
+console.log('Started server...');
+
 wss.on('connection', (ws) => {
-  console.log('Someone has connected');
+  console.log('Someone has connected!');
 });
 
 // This will just forward along all messages to all ws clients for now.
