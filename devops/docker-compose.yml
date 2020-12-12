@@ -11,7 +11,7 @@ services:
     environment:
       - FRONT_END_HOST=http://frontend:3000
       - LISTING_HOST=http://listingserver:5000
-      - WEBSOCKET_HOST=http://websocketserver:6000
+      - WEBSOCKET_HOST=http://websocketserver:6000/websocket
   frontend:
     image : dfw/frontend
     ports:
