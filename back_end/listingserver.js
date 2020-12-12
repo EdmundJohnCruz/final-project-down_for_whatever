@@ -8,6 +8,7 @@ const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&
 const listingCollectionName = 'Listings';
 
 const dbClient = new MongoClient(url);
+var ObjectID = require('mongodb').ObjectID;
 
 const app = express();
 app.use(express.json());
@@ -52,6 +53,21 @@ dbClient.connect((error) => {
       console.log('inserted newListing: ', newListing);
       res.send({'insertedId': dbRes.insertedId});
     });
+  });
+
+  app.delete('/api/listingserver/:listing_id', (req, res) => {
+    const del_id = req.params.listing_id;
+    var query = { "_id": ObjectID(del_id)};
+    // delete listing with ID listingID
+    listingCollection.deleteOne(query, function(err, dbRes)  {
+      if (err)  {
+        console.log('error cannot delete listing');
+        console.log('listingID: ', del_id);
+        console.log(err);
+        res.status(500).send({'message': 'error: cannot delete listing'});
+      }
+    });
+    console.log('delete called, id: ', del_id);
   });
 
   app.listen(5000, () => console.log('App listening on port 5000'));
