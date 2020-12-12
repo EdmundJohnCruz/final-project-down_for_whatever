@@ -9,4 +9,4 @@ RUN npm install
 
 EXPOSE 6000
 
-CMD ["node", "websocket.js"]
+CMD ["node", "websocketserver.js"]
