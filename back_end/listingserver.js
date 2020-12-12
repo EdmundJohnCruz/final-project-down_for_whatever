@@ -5,7 +5,8 @@ const cors = require('cors');
 const redis = require('redis');
 const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
 
-const auth = process.env.MONGO_AUTH;
+// const auth = process.env.MONGO_AUTH;
+const auth = 'dfw:dfw123';
 const dbName = '667Final';
 const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&w=majority`;
 const listingCollectionName = 'Listings';
@@ -53,7 +54,7 @@ dbClient.connect((error) => {
       }
     
       console.log('inserted newListing: ', newListing);
-      redisClient.publish('listings', JSON.stringify({ 'message': 'newListing' }));
+      redisClient.publish('listings', JSON.stringify({ 'message': 'listingChange' }));
       res.send({'insertedId': dbRes.insertedId});
     });
   });
