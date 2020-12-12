@@ -23,6 +23,8 @@ services:
       - webnet
   listingserver:
     image: dfw/listingserver
+    depends_on:
+      - redis
     ports:
       - "5000:5000"
     deploy:
