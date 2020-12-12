@@ -2,7 +2,10 @@ const express = require('express');
 const {MongoClient} = require('mongodb');
 const cors = require('cors');
 
-const auth = 'dfw:dfw123';
+const redis = require('redis');
+const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
+
+const auth = process.env.MONGO_AUTH;
 const dbName = '667Final';
 const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&w=majority`;
 const listingCollectionName = 'Listings';
@@ -28,14 +31,14 @@ dbClient.connect((error) => {
 
   app.get('/api/listingserver/listings', (req, res) => {
     listingCollection.find({})
-    .toArray()
-    .then((docs) => {
-        res.send({listings: docs})
-    })
-    .catch((e) => {
-        console.log("error: ", e);
-        res.send('FAILED');
-    });
+      .toArray()
+      .then((docs) => {
+          res.send({listings: docs})
+      })
+      .catch((e) => {
+          console.log("error: ", e);
+          res.send('FAILED');
+      });
   });
   
   app.post('/api/listingserver/listing', (req, res) => {
@@ -50,6 +53,7 @@ dbClient.connect((error) => {
       }
     
       console.log('inserted newListing: ', newListing);
+      redisClient.publish('listings', JSON.stringify({ 'message': 'newListing' }));
       res.send({'insertedId': dbRes.insertedId});
     });
   });

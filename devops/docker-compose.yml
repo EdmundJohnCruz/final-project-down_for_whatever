@@ -29,9 +29,35 @@ services:
       replicas: 2
       restart_policy:
         condition: on-failure
+    environment:
+      - REDIS_HOST=redis
+      - MONGO_AUTH=dfw:dfw123
     networks:
       - webnet
-      
+  websocket:
+    image : dfw/websocketserver
+    depends_on:
+      - redis
+    ports:
+      - "6000:6000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+    environment:
+      - REDIS_HOST=redis
+  redis:
+    image : redis:5.0.4
+    ports:
+      - "6379:6379"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+    
   # zookeeper:
   #   image: wurstmeister/zookeeper
   #   ports:
