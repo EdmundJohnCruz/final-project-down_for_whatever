@@ -9,7 +9,7 @@ import App from './App.js';
 import './App.css';
 import {BrowserRouter} from 'react-router-dom';
 import {setListings} from './redux/actions/listingActions';
-
+import axios from 'axios';
 import { Provider } from 'react-redux';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
