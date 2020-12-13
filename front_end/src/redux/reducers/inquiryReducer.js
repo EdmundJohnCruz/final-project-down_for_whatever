@@ -1,5 +1,6 @@
 const initState = () => ({
-    inquiries: []
+    inquiries: [],
+    listingId: null //Update when we click more details
   });
   
   const inquiryReducer = (state = initState(), action) => {
