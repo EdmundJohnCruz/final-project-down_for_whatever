@@ -1,5 +1,5 @@
 const express = require('express');
-const {MongoClient} = require('mongodb');
+const {MongoClient, ObjectId} = require('mongodb');
 const cors = require('cors');
 
 const auth = 'dfw:dfw123';
@@ -55,20 +55,28 @@ dbClient.connect((error) => {
 
   app.post('/api/listingserver/editListing', (req, res) => {
     const listingData = req.body.listing;
-    const listingIdToEdit = `ObjectId("${listingData._id}")`;
+    const listingIdToEdit = ObjectId(listingData._id);
     const filter = {_id: listingIdToEdit};
     listingData.timestamp = new Date();
     
-    listingCollection.updateOne(filter, {$set :listingData}, (err, dbRes) => {
+    const newListingData = {
+      title: listingData.title,
+      description: listingData.description,
+      price: listingData.price,
+    }
+
+    listingCollection.updateOne(filter, {$set :newListingData}, (err, dbRes) => { //Make new obj that replaces items inside of listing data
+      
       if(err) {
         console.log(`error! can\'t edit ${listingIdToEdit}`);
         console.log('listingData: ', listingData);
         console.log(err);
         res.status(500).send({'message': 'error: could not edit listing'});
-      }
+      } else {
       console.log('edited listingID: ', listingIdToEdit);
       console.log('listingData: ', listingData);
       res.send({'editedId': listingIdToEdit});
+      }
     });
   });
 
