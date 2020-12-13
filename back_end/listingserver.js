@@ -48,7 +48,6 @@ dbClient.connect((error) => {
         console.log(err);
         res.status(500).send({'message': 'error: cant insert listing'});
       }
-    
       console.log('inserted newListing: ', newListing);
       res.send({'insertedId': dbRes.insertedId});
     });
@@ -56,21 +55,21 @@ dbClient.connect((error) => {
 
   app.post('/api/listingserver/editListing', (req, res) => {
     const listingData = req.body.listing;
-    const listingIdToEdit = req.body.listing._id;
+    const listingIdToEdit = `ObjectId("${listingData._id}")`;
+    const filter = {_id: listingIdToEdit};
     listingData.timestamp = new Date();
-    try{
-      listingCollection.replaceOne(
-        listingIdToEdit,
-        listingData
-      );
+    
+    listingCollection.updateOne(filter, {$set :listingData}, (err, dbRes) => {
+      if(err) {
+        console.log(`error! can\'t edit ${listingIdToEdit}`);
+        console.log('listingData: ', listingData);
+        console.log(err);
+        res.status(500).send({'message': 'error: could not edit listing'});
+      }
       console.log('edited listingID: ', listingIdToEdit);
-      res.send({'editedId': listingIdToEdit});
-    } catch (e) {
-      console.log(`error! can\'t edit ${listingIdToEdit}`);
       console.log('listingData: ', listingData);
-      console.log(err);
-      res.status(500).send({'message': 'error: could not edit listing'});
-    }
+      res.send({'editedId': listingIdToEdit});
+    });
   });
 
   app.listen(5000, () => console.log('App listening on port 5000'));
