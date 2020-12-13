@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserName, setIsLoggedIn } from '../redux/actions/userActions';
-import bcrypt from 'bcrypt';
+//import bcrypt from 'bcrypt';
 
 
 const Login = () => {
