@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserName, setIsLoggedIn } from '../redux/actions/userActions';
+import bcrypt from 'bcrypt';
 
 
 const Login = () => {
@@ -12,6 +13,19 @@ const Login = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+
+        /*axios.post('/api/login',{
+            username: '',
+            password: '',
+        })
+         .then((res) => {
+             console.log(res.data);
+
+             if(res.data.success){
+                console.log("User logged in!");
+            }
+         });*/
+
         dispatch(setUserName(userId));
         dispatch(setIsLoggedIn(true));
     };

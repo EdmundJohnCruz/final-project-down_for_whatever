@@ -22,13 +22,13 @@ import { setListings } from '../redux/actions/listingActions';
 const Home = () => {
     /*Redux variables*/
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
+    const navSignInButtonTitle = isLoggedIn ? "Account" : "Log In";
     const userName = useSelector(state => state.userReducer.userName);
     const listings = useSelector(state => state.listingReducer.listings);
     const dispatch = useDispatch();
 
     const [lcfmodalShow, setlcfModalShow] = React.useState(false);
     const [loginmodalShow, setloginModalShow] = React.useState(false);  //  not implemented yet
-    const [navSignInButtonTitle, setnavSignInButtonTitle] = React.useState("Log In");
 
     return (
         <div>
@@ -50,16 +50,13 @@ const Home = () => {
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-
             <ListingCreationFormModal show={lcfmodalShow} onHide={() => setlcfModalShow(false)} />
-
             <Listings />
         </div>
-    )
+    );
 
     function LoginOrSignout() {
         if (!isLoggedIn) {
-            setnavSignInButtonTitle("Log In");
             return (
                 <div>
                     <Login />
@@ -67,7 +64,6 @@ const Home = () => {
                 </div>
             )
         } else {
-            setnavSignInButtonTitle("Account");
             return (
                 <div className="text-center">
                     <NavDropdown.Item >Welcome : {userName}</NavDropdown.Item>
