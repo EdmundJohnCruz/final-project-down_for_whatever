@@ -28,6 +28,11 @@ app.all('/api/listingserver/*', (req, res) => { // GET /api/listingserver/listin
   apiProxy.web(req, res, { target: listingHost });
 });
 
+const inquiryHost = process.env.INQUIRY_HOST || 'http://localhost:5050';
+console.log(`Inquiry server running on : ${inquiryHost}`);
+app.all('/api/inquiryserver/*', (req,res) => {
+  apiProxy.web(req, res, {target: inquiryHost});
+});
 
 // const messangerHost = process.env.MESSANGER_HOST || 'http://localhost:5000';
 // console.log(`Messanger end proxies to: ${messangerHost}`);
