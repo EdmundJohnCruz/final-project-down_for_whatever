@@ -54,5 +54,24 @@ dbClient.connect((error) => {
     });
   });
 
+  app.post('/api/listingserver/editListing', (req, res) => {
+    const listingData = req.body.listing;
+    const listingIdToEdit = req.body.listing._id;
+    listingData.timestamp = new Date();
+    try{
+      listingCollection.replaceOne(
+        listingIdToEdit,
+        listingData
+      );
+      console.log('edited listingID: ', listingIdToEdit);
+      res.send({'editedId': listingIdToEdit});
+    } catch (e) {
+      console.log(`error! can\'t edit ${listingIdToEdit}`);
+      console.log('listingData: ', listingData);
+      console.log(err);
+      res.status(500).send({'message': 'error: could not edit listing'});
+    }
+  });
+
   app.listen(5000, () => console.log('App listening on port 5000'));
 });
