@@ -47,7 +47,8 @@ const GetListing = ({ listing }) => {
             <p>Listing Price : {listing.price} </p>
             <div>
             <Button variant="secondary" onClick={() => 
-            console.log('Inquiries Button Pressed')
+              console.log('Pain')
+              //setInquiryModalShow(true)
             }> Inquiries
             </Button>
             <Button variant="secondary" onClick={() => 
@@ -83,7 +84,7 @@ const GetListing = ({ listing }) => {
         price: price,
         _id: listing._id,
     }
-    axios.post(url, { listing: data }) //Change the URL to the new backend one
+    axios.post(url, { listing: data }) 
         .then(res => console.log(res))
         .catch(err => console.log(err));
     console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
@@ -140,9 +141,25 @@ const GetListing = ({ listing }) => {
             </Modal>
         )
     }
-  }; 
+  };
+  
+  /* function InquiryList (props) {
+    const [inquiry, setInquiry] = React.useState();
 
-}
+    const userName = useSelector(state => state.userReducer.userName);
+    const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
+
+    const viewInquiry = e => {
+      e.preventDefault();
+      const data = {
+        userid = userName,
+
+      }
+    }
+
+  } */
+
+} 
 
 const mapStateToProps = state => ({
   dispatch: state.dispatch
