@@ -14,19 +14,10 @@ const ListingCreationForm = () => {
 
     const userName = useSelector(state => state.userReducer.userName);
 
-    const checkUserId = () => {
-        if(userName===''){
-            setUserId('No username was detected.');
-        } else {
-            setUserId(userName);
-        }
-    }
-
     const handleSubmit = e => {
         e.preventDefault();
-        checkUserId();
         const data = {
-            userid: userId,
+            userid: userName,
             title: title,
             description: description,
             price: price,

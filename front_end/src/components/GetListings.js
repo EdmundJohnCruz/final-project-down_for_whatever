@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card, Row, Col, Button, Modal } from 'react-bootstrap';
+import { Card, Row, Col, Button, Modal, Breadcrumb, Badge } from 'react-bootstrap';
 
 const GetListing = ({ listing }) => {
 
@@ -8,7 +8,9 @@ const GetListing = ({ listing }) => {
 
   return (
     <Card border="secondary" style={{ margin: "15px", }}>
-      <Card.Header as="h4">&nbsp;{listing.title}</Card.Header>
+      <Card.Header as="h4">&nbsp;{listing.title} 
+      <Breadcrumb.Item className="float-right small">Posted By: {listing.userid} </Breadcrumb.Item> 
+      </Card.Header>
       <Row className="no-gutters">
         <Col className="md-3 text-center">
           <Card.Img src="logo192.png" style={{ width: "100px", height: "100px" }} />
@@ -20,6 +22,7 @@ const GetListing = ({ listing }) => {
         </Card.Body>
       </Row>
       <Card.Footer className="text-muted text-center" style={{ padding: "10px" }}>Price : ${listing.price}
+        <Badge className="float-left">ID : ${listing._id}</Badge>
         <Button className="float-right" variant="secondary" onClick={() => setModalShow(true)}>More Detail</Button>
       </Card.Footer>
       <TempModal show={modalShow} onHide={() => setModalShow(false)} />
