@@ -6,6 +6,7 @@ import { Card, Row, Col, Button, Modal, Form, FormControl, InputGroup, Breadcrum
 import { connect, useSelector, useDispatch } from 'react-redux';
 
 const url = "/api/listingserver/editListing";
+const delURL = "/api/listingserver/:listing_id";
 
 const GetListing = ({ listing }) => {
 
@@ -35,6 +36,7 @@ const GetListing = ({ listing }) => {
 
   function MoreDetails (props) {
     const [lefmodalShow, setlefModalShow] = React.useState(false);
+    const [delmodalShow, setdelModalShow] = React.useState(false);
 
     return (
       <Modal {...props} size="lg" centered>
@@ -49,21 +51,63 @@ const GetListing = ({ listing }) => {
             <Button variant="secondary" onClick={() => 
               console.log('Pain')
               //setInquiryModalShow(true)
-            }> Inquiries
+            }> 
+              View Inquiries
             </Button>
             <Button variant="secondary" onClick={() => 
               setlefModalShow(true)
             }>
-              Edit Button</Button>  
-            <Button variant="secondary" onClick={() => 
-              console.log('Delete Button Pressed')
-            }>Delete Button</Button>
+              Edit Post
+            </Button>  
+            <Button variant="secondary"  onClick={() =>
+              setdelModalShow(true)
+            }>Delete Post
+            </Button>
             </div>
           </Modal.Body>
         </Modal.Header>
         <ListingEditingForm show={lefmodalShow} onHide={() => setlefModalShow(false)} />
+        <DeleteForm show={delmodalShow} onHide={() => setdelModalShow(false)} />
       </Modal>
     )
+  }
+
+  function DeleteForm (props) {
+
+    const userName = useSelector(state => state.userReducer.userName);
+    const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
+
+    const deleteListing = e => {
+      axios.delete(`/api/listingserver/${listing._id}`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+    } 
+
+    if (isLoggedIn) {
+      return (
+        <Modal {...props} size="md" centered>
+          <Modal.Header closeButton>
+            <div className="delForm">
+              <Form onSubmit={deleteListing}>
+                <h3>Are you sure you wish to delete this post?</h3>
+                <button type="submit" class="btn btn-secondary float-right">Yes</button>
+              </Form>
+            </div>
+          </Modal.Header>
+        </Modal>
+      )
+    } else {
+      return (
+        <Modal {...props} size="md" centered>
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    You cannot delete this post.
+            </Modal.Title>
+            </Modal.Header>
+        </Modal>
+    )
+    }
+
   }
   
   function ListingEditingForm (props) {
@@ -141,23 +185,7 @@ const GetListing = ({ listing }) => {
             </Modal>
         )
     }
-  };
-  
-  /* function InquiryList (props) {
-    const [inquiry, setInquiry] = React.useState();
-
-    const userName = useSelector(state => state.userReducer.userName);
-    const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
-
-    const viewInquiry = e => {
-      e.preventDefault();
-      const data = {
-        userid = userName,
-
-      }
-    }
-
-  } */
+  }
 
 } 
 
