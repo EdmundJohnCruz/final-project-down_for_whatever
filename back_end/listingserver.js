@@ -80,5 +80,20 @@ dbClient.connect((error) => {
     });
   });
 
+  app.delete('/api/listingserver/:listing_id', (req, res) => {
+    const del_id = req.params.listing_id;
+    var query = { "_id": ObjectID(del_id)};
+    // delete listing with ID listingID
+    listingCollection.deleteOne(query, function(err, dbRes)  {
+      if (err)  {
+        console.log('error cannot delete listing');
+        console.log('listingID: ', del_id);
+        console.log(err);
+        res.status(500).send({'message': 'error: cannot delete listing'});
+      }
+    });
+    console.log('delete called, id: ', del_id);
+  });
+
   app.listen(5000, () => console.log('App listening on port 5000'));
 });
