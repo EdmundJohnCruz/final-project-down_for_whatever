@@ -7,11 +7,11 @@ import { useSelector } from 'react-redux';
 const url = "/api/listingserver/listing";
 
 const ListingCreationForm = () => {
+    const [userId, setUserId] = React.useState();
     const [title, setTitle] = React.useState();
     const [description, setDescription] = React.useState();
     const [price, setPrice] = React.useState();
-    const [userId, setUserId] = React.useState();
-
+    const [file, setFile] = React.useState();
     const userName = useSelector(state => state.userReducer.userName);
 
     const checkUserId = () => {
@@ -20,21 +20,20 @@ const ListingCreationForm = () => {
         } else {
             setUserId(userName);
         }
-    }
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
         checkUserId();
-        const data = {
-            userid: userId,
-            title: title,
-            description: description,
-            price: price,
-        }
-        axios.post(url, { listing: data })
+        const formData = new FormData();
+        formData.append('userid',userName,);
+        formData.append('title',title,);
+        formData.append('description',description,);
+        formData.append('price',price,);
+        formData.append('image',file,file.name);
+        axios.post(url, formData)
             .then(res => console.log(res))
             .catch(err => console.log(err));
-        console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
     };
 
     return (
@@ -63,7 +62,9 @@ const ListingCreationForm = () => {
 
                 <Form.Group>
                     <Form.Label class="font-weight-bold">Please Provide an Image for the Listing</Form.Label>
-                    <Form.File type="image" label="Upload your image here" custom />
+                    {/*<Form.File type="image" label="Upload your image here" custom />*/}
+                    <br/>
+                    <input type="file" onChange={e => setFile(e.target.files[0])} />
                 </Form.Group>
 
                 <button type="submit" class="btn btn-primary float-right">Create Listing</button>

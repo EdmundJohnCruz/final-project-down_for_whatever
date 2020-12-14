@@ -1,6 +1,7 @@
 const express = require('express');
 const {MongoClient} = require('mongodb');
 const cors = require('cors');
+const multer = require('multer');
 
 const auth = 'dfw:dfw123';
 const dbName = '667Final';
@@ -8,6 +9,19 @@ const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&
 const listingCollectionName = 'Listings';
 
 const dbClient = new MongoClient(url);
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    //console.log(req.body);
+    console.log(file);
+    cb(null, file.originalname);
+  }
+})
+
+var upload = multer({ storage: storage });
 
 const app = express();
 app.use(express.json());
@@ -37,10 +51,17 @@ dbClient.connect((error) => {
         res.send('FAILED');
     });
   });
-  
-  app.post('/api/listingserver/listing', (req, res) => {
-    const newListing = req.body.listing;
-    newListing.timestamp = new Date();
+
+  app.post('/api/listingserver/listing', upload.single('image'), (req, res, next) => {
+    console.log(req.body);
+     const newListing = {
+       userid : req.body.userid,
+       title : req.body.title,
+       description : req.body.description,
+       price : req.body.price,
+       imgaddr : req.file.filename,
+       timestamp : new Date(),
+     };
     listingCollection.insertOne(newListing, (err, dbRes) => {
       if(err) {
         console.log('error! can\'t insert newListing');
