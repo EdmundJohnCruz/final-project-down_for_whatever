@@ -12,6 +12,7 @@ services:
       - FRONT_END_HOST=http://frontend:3000
       - LISTING_HOST=http://listingserver:5000
       - WEBSOCKET_HOST=http://websocketserver:6000/websocket
+      - INQUIRY_HOST=http://inquiryserver:5050
   frontend:
     image : dfw/frontend
     ports:
@@ -60,7 +61,17 @@ services:
         constraints: [node.role == manager]
     networks:
       - webnet
-    
+  inquiryserver:
+    image: dfw/inquiryserver
+    ports:
+      - "5050:5050"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+      
   # zookeeper:
   #   image: wurstmeister/zookeeper
   #   ports:
