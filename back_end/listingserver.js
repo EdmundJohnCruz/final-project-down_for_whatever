@@ -108,7 +108,7 @@ dbClient.connect((error) => {
 
   app.delete('/api/listingserver/:listing_id', (req, res) => {
     const del_id = req.params.listing_id;
-    var query = { "_id": ObjectID(del_id)};
+    var query = { "_id": ObjectId(del_id) };
     // delete listing with ID listingID
     listingCollection.deleteOne(query, function(err, dbRes)  {
       if (err)  {
