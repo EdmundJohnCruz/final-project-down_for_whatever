@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import { FormControl, InputGroup } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setShowLCF } from '../redux/actions/modalActions';
 
 const url = "/api/listingserver/listing";
 
@@ -10,23 +11,14 @@ const ListingCreationForm = () => {
     const [title, setTitle] = React.useState();
     const [description, setDescription] = React.useState();
     const [price, setPrice] = React.useState();
-    const [userId, setUserId] = React.useState();
 
+    const dispatch = useDispatch();
     const userName = useSelector(state => state.userReducer.userName);
-
-    const checkUserId = () => {
-        if(userName===''){
-            setUserId('No username was detected.');
-        } else {
-            setUserId(userName);
-        }
-    }
 
     const handleSubmit = e => {
         e.preventDefault();
-        checkUserId();
         const data = {
-            userid: userId,
+            userid: userName,
             title: title,
             description: description,
             price: price,
@@ -67,6 +59,8 @@ const ListingCreationForm = () => {
                 </Form.Group>
 
                 <button type="submit" class="btn btn-primary float-right">Create Listing</button>
+
+                <button onClick={() => {dispatch(setShowLCF(false)) }}>Cancel</button>
             </Form>
         </div>
     )

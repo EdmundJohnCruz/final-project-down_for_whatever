@@ -1,5 +1,5 @@
 const express = require('express');
-const {MongoClient} = require('mongodb');
+const {MongoClient, ObjectId} = require('mongodb');
 const cors = require('cors');
 
 const redis = require('redis');
@@ -52,11 +52,52 @@ dbClient.connect((error) => {
         console.log(err);
         res.status(500).send({'message': 'error: cant insert listing'});
       }
-    
       console.log('inserted newListing: ', newListing);
       redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
       res.send({'insertedId': dbRes.insertedId});
     });
+  });
+
+  app.post('/api/listingserver/editListing', (req, res) => {
+    const listingData = req.body.listing;
+    const listingIdToEdit = ObjectId(listingData._id);
+    const filter = {_id: listingIdToEdit};
+    listingData.timestamp = new Date();
+    
+    const newListingData = {
+      title: listingData.title,
+      description: listingData.description,
+      price: listingData.price,
+    }
+
+    listingCollection.updateOne(filter, {$set :newListingData}, (err, dbRes) => { //Make new obj that replaces items inside of listing data
+      
+      if(err) {
+        console.log(`error! can\'t edit ${listingIdToEdit}`);
+        console.log('listingData: ', listingData);
+        console.log(err);
+        res.status(500).send({'message': 'error: could not edit listing'});
+      } else {
+      console.log('edited listingID: ', listingIdToEdit);
+      console.log('listingData: ', listingData);
+      res.send({'editedId': listingIdToEdit});
+      }
+    });
+  });
+
+  app.delete('/api/listingserver/:listing_id', (req, res) => {
+    const del_id = req.params.listing_id;
+    var query = { "_id": ObjectID(del_id)};
+    // delete listing with ID listingID
+    listingCollection.deleteOne(query, function(err, dbRes)  {
+      if (err)  {
+        console.log('error cannot delete listing');
+        console.log('listingID: ', del_id);
+        console.log(err);
+        res.status(500).send({'message': 'error: cannot delete listing'});
+      }
+    });
+    console.log('delete called, id: ', del_id);
   });
 
   app.listen(5000, () => console.log('App listening on port 5000'));

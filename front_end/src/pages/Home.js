@@ -18,16 +18,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserName, setIsLoggedIn } from '../redux/actions/userActions';
 import { setListings } from '../redux/actions/listingActions';
+import { setShowLCF } from '../redux/actions/modalActions';
 
 const Home = () => {
     /*Redux variables*/
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
     const userName = useSelector(state => state.userReducer.userName);
     const listings = useSelector(state => state.listingReducer.listings);
+    const showLCFModal = useSelector(state => state.modalReducer.showLCF);
     const dispatch = useDispatch();
 
-    const [lcfmodalShow, setlcfModalShow] = React.useState(false);
-    const [loginmodalShow, setloginModalShow] = React.useState(false);  //  not implemented yet
     const [navSignInButtonTitle, setnavSignInButtonTitle] = React.useState("Log In");
 
     return (
@@ -37,7 +37,7 @@ const Home = () => {
                 <Navbar.Toggle />
                 <Navbar.Collapse>
                     <Nav className="justify-content-start mr-auto">
-                        <Nav.Link title="Create Post" onClick={() => setlcfModalShow(true)}>Create Post&nbsp;</Nav.Link>
+                        <Nav.Link title="Create Post" onClick={() => {dispatch(setShowLCF(true))}}>Create Post&nbsp;</Nav.Link>
                         <Form inline>
                             <FormControl type="text" placeholder="Search" />
                             <Button variant="secondary">Search</Button>
@@ -51,7 +51,7 @@ const Home = () => {
                 </Navbar.Collapse>
             </Navbar>
 
-            <ListingCreationFormModal show={lcfmodalShow} onHide={() => setlcfModalShow(false)} />
+            <ListingCreationFormModal show={showLCFModal} onHide={() => {dispatch(setShowLCF(false))}} />
 
             <Listings />
         </div>
