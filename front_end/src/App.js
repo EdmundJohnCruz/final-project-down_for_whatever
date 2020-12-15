@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from './pages/Home.js';
 import SignUp from './pages/SignUp.js';
 //  testing
@@ -8,8 +8,8 @@ import ListingCreationForm from './components/ListingCreationForm'
 const App = () => {
     return (
         <Switch>
-            <Route path="/">
-                <Home />
+            <Route exact path="/">
+                <Redirect to="/home"/>
             </Route>
             <Route path="/home">
                 <Home />

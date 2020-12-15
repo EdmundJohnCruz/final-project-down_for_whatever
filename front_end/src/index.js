@@ -12,7 +12,41 @@ import {setListings} from './redux/actions/listingActions';
 import axios from 'axios';
 import { Provider } from 'react-redux';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const loadState = () => {
+  try {
+    const targetState = localStorage.getItem('state');
+    if(targetState === null){
+      return undefined;
+    }
+    return JSON.parse(targetState);
+  }
+  catch (err) {
+    return undefined;
+  }
+};
+
+const saveState = (state) => {
+  try {
+    const targetState = JSON.stringify(state);
+    localStorage.setItem('state',targetState);
+  }
+  catch (err){
+    return console.log('there was an error with saveState');
+  }
+};
+
+const loginState = loadState();
+
+const store = createStore(rootReducer, loginState, applyMiddleware(thunk));
+
+store.subscribe(() => {
+  console.log('store.getState(): ', store.getState());
+  console.log('store.getState()userReducer: ', store.getState().userReducer);
+
+  saveState({
+    userReducer: store.getState().userReducer
+  });
+});
 
 // ws update helpers
 const getListings = (dispatch) => { // also called in Listings.js

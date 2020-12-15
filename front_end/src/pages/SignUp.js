@@ -1,23 +1,16 @@
-/*
 import React from 'react';
 
-const [username, setUsername] = React.useState('');
-const [password, setPassword] = React.useState('');
-const [error, setError] = React.useState('');
-
-
 const signupAuth = () => {
-    const body = {
+
+    /*axios.post('/api/signup', {
         username: username,
         password: password,
-    };
-
-    axios.post('/api/signup', body)
+    })
     .then((res) => {
         console.log(res.data);
 
         if(res.data.success){
-            console.log("User signed in.");
+            console.log("User registered.");
         }
         else {
             setError(res.data.error);
@@ -25,10 +18,15 @@ const signupAuth = () => {
     })
     .catch(() => {
         setError("An error occured while registering.");
-    });
+    });*/
 };
 
 const SignUp = () => {
+
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [error, setError] = React.useState('');
+
     return (
         <div>
             <h1>Signup</h1>
@@ -53,10 +51,12 @@ const SignUp = () => {
                     <button name="button" disabled={!username || !password}
                         onClick={signupAuth}>Register</button>
                 </div>
+                <div>
+                    <a href="/home">Go Back Home</a>
+                </div>
             </div>
         </div>
     );
 };
 
 export default SignUp;
-*/
