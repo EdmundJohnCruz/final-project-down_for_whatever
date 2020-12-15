@@ -11,6 +11,8 @@ services:
     environment:
       - FRONT_END_HOST=http://frontend:3000
       - LISTING_HOST=http://listingserver:5000
+      - WEBSOCKET_HOST=http://websocketserver:6000/websocket
+      - INQUIRY_HOST=http://inquiryserver:5050
   frontend:
     image : dfw/frontend
     ports:
@@ -23,8 +25,46 @@ services:
       - webnet
   listingserver:
     image: dfw/listingserver
+    depends_on:
+      - redis
     ports:
       - "5000:5000"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    environment:
+      - REDIS_HOST=redis
+      - MONGO_AUTH=dfw:dfw123
+    networks:
+      - webnet
+  websocketserver:
+    image : dfw/websocketserver
+    depends_on:
+      - redis
+    ports:
+      - "6000:6000"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+    environment:
+      - REDIS_HOST=redis
+  redis:
+    image : redis:5.0.4
+    ports:
+      - "6379:6379"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+  inquiryserver:
+    image: dfw/inquiryserver
+    ports:
+      - "5050:5050"
     deploy:
       replicas: 2
       restart_policy:
