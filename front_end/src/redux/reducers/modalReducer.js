@@ -7,8 +7,8 @@ const modalReducer = (state = initState(), action) => {
     switch(action.type){
         case 'LCF_SET':
             return {
-                ...state, //copies old state
-                showLCF: action.show, //imports the new username
+                ...state,
+                showLCF: action.show,
             };
         case 'DEL_SET':
             return {
