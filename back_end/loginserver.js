@@ -53,3 +53,6 @@ app.post('/api/login', (req, res) => {
 app.post('/api/signup', (req, res) => {
   res.send('you just tried to signup, wowee');
 });
+
+app.listen(5060, () => console.log('App listening on port 5060'));
+});

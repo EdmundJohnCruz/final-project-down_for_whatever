@@ -71,6 +71,19 @@ services:
         condition: on-failure
     networks:
       - webnet
+  loginserver:
+    image: dfw/loginserver
+    ports:
+      - "5060:5060"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+    environment: 
+      - MONGO_AUTH=dfw:dfw123
+      - SESSION_SECRET=dfw123secret
       
   # zookeeper:
   #   image: wurstmeister/zookeeper
