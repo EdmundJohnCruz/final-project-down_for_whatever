@@ -24,8 +24,7 @@ const store = new MongoDBStore({
   },  (error) => {
   console.log('this is an error bc we cant connect to db for store');
   console.log(error);
-}
-);
+});
 
 // this should console log when an error happens
 store.on('error', function(error) {
@@ -59,13 +58,14 @@ dbClient.connect((error) => {
   const usersCollection = db.collection(usersCollectionName);
 
 
-  app.post('/api/login', (req, res) => {
+  app.post('/api/loginserver/login', (req, res) => {
     const uname = req.body.username;
     const pass = req.body.password;
 
     if(uname && pass){
       usersCollection.findOne({username: uname})
       .then((foundUser) => {
+        // USE BCRYPT
         if(pass === foundUser.password){
           console.log('sucessful login for ', uname);
           // set session values
@@ -90,7 +90,7 @@ dbClient.connect((error) => {
     }
   });
 
-  app.post('/api/signup', (req, res) => {
+  app.post('/api/loginserver/signup', (req, res) => {
     const uname = req.body.username;
     const pass = req.body.password;
     if(uname && pass){
@@ -121,7 +121,7 @@ dbClient.connect((error) => {
     }
   });
 
-  app.post('/api/logout', (req, res) => {
+  app.post('/api/loginserver/logout', (req, res) => {
     req.session.destroy();
     res.send({message: 'logged out'})
   });

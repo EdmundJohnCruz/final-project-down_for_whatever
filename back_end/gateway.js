@@ -59,5 +59,11 @@ app.all('/*', (req, res) => {
   apiProxy.web(req, res, { target: fronEndHost });
 });
 
+const loginHost = process.env.LOGIN_HOST || 'http://localhost:5060';
+console.log(`Login server running on : ${loginHost}`);
+app.all('/api/loginserver/*', (req,res) => {
+  apiProxy.web(req, res, {target: loginHost});
+});
+
 appServer.listen(4000);
 console.log('Gateway started');

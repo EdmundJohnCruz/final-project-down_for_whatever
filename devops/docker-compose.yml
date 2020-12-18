@@ -13,6 +13,7 @@ services:
       - LISTING_HOST=http://listingserver:5000
       - WEBSOCKET_HOST=http://websocketserver:6000/websocket
       - INQUIRY_HOST=http://inquiryserver:5050
+      - LOGIN_HOST=http://loginserver:5060
   frontend:
     image : dfw/frontend
     ports:
