@@ -98,10 +98,11 @@ dbClient.connect((error) => {
         console.log('listingData: ', listingData);
         console.log(err);
         res.status(500).send({'message': 'error: could not edit listing'});
-      } else {
-      console.log('edited listingID: ', listingIdToEdit);
-      console.log('listingData: ', listingData);
-      res.send({'editedId': listingIdToEdit});
+      }
+      else {
+        console.log('edited listingID: ', listingIdToEdit);
+        console.log('listingData: ', listingData);
+        res.send({'editedId': listingIdToEdit});
       }
     });
   });
