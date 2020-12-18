@@ -13,7 +13,7 @@ const cors = require('cors');
 const auth = 'dfw:dfw123';
 const dbName = '667Final';
 const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&w=majority`;
-const urlSession = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/${dbName}/?retryWrites=true&w=majority`;
+const urlSession = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 const usersCollectionName = 'Users';
 const dbClient = new MongoClient(url);
 
@@ -22,8 +22,10 @@ const store = new MongoDBStore({
   uri: urlSession,
   collection: 'Sessions'
   },  (error) => {
-  console.log('this is an error bc we cant connect to db for store');
-  console.log(error);
+    if(error){
+      console.log('this is an error bc we cant connect to db for store');
+      console.log(error);    
+    }
 });
 
 // this should console log when an error happens
