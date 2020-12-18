@@ -14,7 +14,7 @@ const listingCollectionName = 'Listings';
 
 const dbClient = new MongoClient(url);
 
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './uploads')
   },
@@ -25,7 +25,7 @@ var storage = multer.diskStorage({
   }
 })
 
-var upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
 
 const app = express();
 app.use(express.json());
@@ -108,7 +108,7 @@ dbClient.connect((error) => {
 
   app.delete('/api/listingserver/:listing_id', (req, res) => {
     const del_id = req.params.listing_id;
-    var query = { "_id": ObjectId(del_id) };
+    const query = { "_id": ObjectId(del_id) };
     // delete listing with ID listingID
     listingCollection.deleteOne(query, function(err, dbRes)  {
       if (err)  {
