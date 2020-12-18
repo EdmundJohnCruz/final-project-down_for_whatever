@@ -48,7 +48,7 @@ const Login = () => {
 
                 <Form.Group>
                     <Form.Label class="font-weight-bold">Password :</Form.Label>
-                    <Form.Control id="username" type="username" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} />
+                    <Form.Control id="password" type="password" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
                 <Button type="submit" className="btn-primary float-center">Log In</Button>
             </Form>

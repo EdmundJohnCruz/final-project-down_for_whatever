@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import { FormControl, InputGroup } from 'react-bootstrap';
@@ -8,7 +8,6 @@ import { setShowLCF } from '../redux/actions/modalActions';
 const url = "/api/listingserver/listing";
 
 const ListingCreationForm = () => {
-    const [userId, setUserId] = React.useState();
     const [title, setTitle] = React.useState();
     const [description, setDescription] = React.useState();
     const [price, setPrice] = React.useState();
@@ -57,7 +56,7 @@ const ListingCreationForm = () => {
                     <Form.Label class="font-weight-bold">Please Provide an Image for the Listing</Form.Label>
                     {/*<Form.File type="image" label="Upload your image here" custom />*/}
                     <br/>
-                    <input type="file" onChange={e => setFile(e.target.files[0])} />
+                    <input type="file" onChange={e => setFile(e.target.files[0])} required />
                 </Form.Group>
 
                 <button type="submit" class="btn btn-primary float-right">Create Listing</button>

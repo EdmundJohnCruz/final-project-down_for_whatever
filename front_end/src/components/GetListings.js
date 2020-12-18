@@ -81,18 +81,18 @@ const GetListing = ({ listing }) => {
 
   function MakeInquiryForm(props) {
     const [message, setMessage] = React.useState("");
-
     const userName = useSelector(state => state.userReducer.userName);
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
 
     const sendInquiry = e => {
       e.preventDefault();
+      const formattedMessage = `${userName} : ${message}`;
       const inquiry = {
         buyerId: userName,
         sellerId: listing.userid,
         listingId: listing._id,
         listingTitle: listing.title,
-        message: message,
+        message: [formattedMessage],
       }
       axios.post(sendInquiryURL, { inquiry: inquiry })
         .then(res => console.log(res))
