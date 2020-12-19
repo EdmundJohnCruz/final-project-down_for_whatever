@@ -1,4 +1,6 @@
 const express = require('express');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const { MongoClient, ObjectID } = require('mongodb');
 const cors = require('cors');
 
@@ -8,13 +10,40 @@ const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localh
 const auth = 'dfw:dfw123';
 const dbName = '667Final';
 const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&w=majority`;
+const urlSession = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 const inquiryCollectionName = 'Inquiries';
 
 const dbClient = new MongoClient(url);
 
+const store = new MongoDBStore({
+  uri: urlSession,
+  collection: 'sessions'
+  },  (error) => {
+    if(error){
+      console.log('this is an error bc we cant connect to db for store');
+      console.log(error);    
+    }
+});
+
+// this should console log when an error happens
+store.on('error', function(error) {
+  console.log('Session Store Error:');
+  console.log(error);
+});
+
+
 const app = express();
 app.use(express.json());
 app.use(cors());
+const sessionSecret = 'dfw123secret';
+app.use(session({
+  name: 'dfwFinalProject',
+  secret: sessionSecret,
+  store: store,
+  resave: true,
+  saveUninitialized: false,
+}));
+
 
 dbClient.connect((error) => {
   if (error) {

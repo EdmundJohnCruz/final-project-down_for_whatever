@@ -17,7 +17,7 @@ const listingCollectionName = 'Listings';
 
 const store = new MongoDBStore({
   uri: urlSession,
-  collection: 'Sessions'
+  collection: 'sessions'
   },  (error) => {
     if(error){
       console.log('this is an error bc we cant connect to db for store');
@@ -89,7 +89,7 @@ dbClient.connect((error) => {
 
   app.post('/api/listingserver/listing', upload.single('image'), (req, res, next) => {
     console.log(req.body);
-    if(session.userId === null){
+    if(req.session.userId === null){
       res.send({insertedId: null, message: 'must be logged in to make new post'});
     }
 
