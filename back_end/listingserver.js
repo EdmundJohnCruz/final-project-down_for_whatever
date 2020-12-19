@@ -5,22 +5,24 @@ const {MongoClient, ObjectId} = require('mongodb');
 const cors = require('cors');
 const multer = require('multer');
 
-const redis = require('redis');
-const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
+// const redis = require('redis');
+// // const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
 
 // const auth = process.env.MONGO_AUTH;
 const auth = 'dfw:dfw123';
 const dbName = '667Final';
 const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&w=majority`;
-const urlSession = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/${dbName}/?retryWrites=true&w=majority`;
+const urlSession = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 const listingCollectionName = 'Listings';
 
 const store = new MongoDBStore({
   uri: urlSession,
   collection: 'Sessions'
   },  (error) => {
-  console.log('this is an error bc we cant connect to db for store');
-  console.log(error);
+    if(error){
+      console.log('this is an error bc we cant connect to db for store');
+      console.log(error);    
+    }
 });
 
 // this should console log when an error happens
@@ -107,7 +109,7 @@ dbClient.connect((error) => {
         res.status(500).send({'message': 'error: cant insert listing'});
       }
       console.log('inserted newListing: ', newListing);
-      redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
+      // redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
       res.send({'insertedId': dbRes.insertedId});
     });
   });
@@ -171,7 +173,7 @@ dbClient.connect((error) => {
         res.send({'deletedId': null, message: 'couldn\'t find listing to delete'});
       }
       else{
-        redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
+        // redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
         console.log('delete called, id: ', del_id);
         res.send({'deletedId': del_id, message: 'delete success'});
       }
