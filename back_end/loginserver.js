@@ -1,13 +1,11 @@
 const express = require('express');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const {MongoClient, ObjectId} = require('mongodb');
+const {MongoClient} = require('mongodb');
 const cors = require('cors');
-// TODO add bcrypt
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
-// const redis = require('redis');
-// const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
+const saltRounds = 3;
 
 // const auth = process.env.MONGO_AUTH;
 const auth = 'dfw:dfw123';
@@ -67,20 +65,25 @@ dbClient.connect((error) => {
     if(uname && pass){
       usersCollection.findOne({username: uname})
       .then((foundUser) => {
-        // USE BCRYPT
-        if(pass === foundUser.password){
-          console.log('sucessful login for ', uname);
-          // set session values
-          req.session.username = uname;
-          req.session.userId = foundUser._id;
-          req.session.admin = foundUser.admin;
-
-          res.send({error: false, username: uname, admin: foundUser.admin, userId: foundUser._id, message: 'login success'});
-        }
-        else{
-          console.log('login failed');
-          res.send({error: false, username: null, admin: false, userId: null, message: 'login failed'});  
-        }
+        bcrypt.compare(pass, foundUser.password, (bErr, response) => {
+          if(bErr){
+            console.log('Becrypt Error: ', bErr);
+            res.response(500).send("bcrypt error");
+          }
+          if(response === true){
+            console.log('sucessful login for ', uname);
+            // set session values
+            req.session.username = uname;
+            req.session.userId = foundUser._id;
+            req.session.admin = foundUser.admin;
+  
+            res.send({error: false, username: uname, admin: foundUser.admin, userId: foundUser._id, message: 'login success'});
+          }
+          else{
+            console.log('login failed');
+            res.send({error: false, username: null, admin: false, userId: null, message: 'login failed'});  
+          }  
+        });
       })
       .catch((e) => {
         console.log("login dberror: ", e);
@@ -98,35 +101,41 @@ dbClient.connect((error) => {
     const pass = req.body.password;
     const admin = req.body.admin;
 
-    const newUser = { username: uname, password: pass, admin: admin }
+    bcrypt.hash(pass, saltRounds, (bErr, hash) => {
+      if(bErr){
+        console.log('Becrypt Error: ', bErr);
+        res.response(500).send("bcrypt error");
+      }
+      const newUser = { username: uname, password: hash, admin: admin }
 
-    if(uname && pass){
-      usersCollection.find({username: uname})
-      .toArray()
-      .then((found) => {
-        if(found === []){
-          usersCollection.insertOne(newUser, (err, dbRes) => {
-            if(err) {
-              console.log('db signup error: ', err);
-              res.send({error: true, username: null, admin: newUser.admin, userId: null, message: 'db error creating user account'});
-            }
-            else {
-              req.session.username = uname;
-              req.session.userId = dbRes.insertedId;    
-              req.session.admin = admin;
-              res.send({error: false, username: uname, admin: false, userId: dbRes.insertedId, message: 'signup success'});
-            }
-          })
-        }
-        else{
-          res.send({error: false, username: null, admin: false, userId: null, message: 'name taken'});  
-        }
-      })
-    }
-    else {
-      console.log('bad request: ', req);
-      res.send({error: true, username: null, admin: false, userId: null, message: 'bad login request, missing un&pw'});
-    }
+      if(uname && pass){
+        usersCollection.find({username: uname})
+        .toArray()
+        .then((found) => {
+          if(found === []){
+            usersCollection.insertOne(newUser, (err, dbRes) => {
+              if(err) {
+                console.log('db signup error: ', err);
+                res.send({error: true, username: null, admin: newUser.admin, userId: null, message: 'db error creating user account'});
+              }
+              else {
+                req.session.username = uname;
+                req.session.userId = dbRes.insertedId;    
+                req.session.admin = admin;
+                res.send({error: false, username: uname, admin: false, userId: dbRes.insertedId, message: 'signup success'});
+              }
+            })
+          }
+          else{
+            res.send({error: false, username: null, admin: false, userId: null, message: 'name taken'});  
+          }
+        })
+      }
+      else {
+        console.log('bad request: ', req);
+        res.send({error: true, username: null, admin: false, userId: null, message: 'bad login request, missing un&pw'});
+      }
+    });
   });
 
   app.post('/api/loginserver/logout', (req, res) => {
