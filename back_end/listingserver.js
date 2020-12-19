@@ -33,6 +33,7 @@ store.on('error', function(error) {
 
 
 const dbClient = new MongoClient(url);
+var ObjectID = require('mongodb').ObjectID;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -141,6 +142,7 @@ dbClient.connect((error) => {
       else if(dbRes.modifiedCount >= 0) {
         console.log('edited listingID: ', listingIdToEdit);
         console.log('listingData: ', listingData);
+        redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
         res.send({'editedId': listingIdToEdit, message: 'edit success'});
       }
       else {
@@ -173,7 +175,7 @@ dbClient.connect((error) => {
         res.send({'deletedId': null, message: 'couldn\'t find listing to delete'});
       }
       else{
-        // redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
+        redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
         console.log('delete called, id: ', del_id);
         res.send({'deletedId': del_id, message: 'delete success'});
       }
