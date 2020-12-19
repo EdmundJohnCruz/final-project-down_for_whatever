@@ -104,17 +104,17 @@ dbClient.connect((error) => {
       usersCollection.find({username: uname})
       .toArray()
       .then((found) => {
-        if(found === []){
+        if(found.length === 0){
           usersCollection.insertOne(newUser, (err, dbRes) => {
             if(err) {
               console.log('db signup error: ', err);
-              res.send({error: true, username: null, admin: newUser.admin, userId: null, message: 'db error creating user account'});
+              res.send({error: true, username: null, admin: false, userId: null, message: 'db error creating user account'});
             }
             else {
               req.session.username = uname;
               req.session.userId = dbRes.insertedId;    
               req.session.admin = admin;
-              res.send({error: false, username: uname, admin: false, userId: dbRes.insertedId, message: 'signup success'});
+              res.send({error: false, username: uname, admin: newUser.admin, userId: dbRes.insertedId, message: 'signup success'});
             }
           })
         }

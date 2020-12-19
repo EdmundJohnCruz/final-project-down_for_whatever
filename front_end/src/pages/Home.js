@@ -72,7 +72,7 @@ const Home = () => {
                     <NavDropdown.Item >Welcome : {userName}</NavDropdown.Item>
                     <NavDropdown.Item >My Listings</NavDropdown.Item>
                     <NavDropdown.Item >Inquiries</NavDropdown.Item>
-                    <Button onClick={() => {dispatch(setIsLoggedIn(false));dispatch(setUserName("Signed Out"))}}>Sign Out</Button>
+                    <Button onClick={() => {dispatch(setIsLoggedIn(false));dispatch(setUserName("Signed Out",null))}}>Sign Out</Button>
                 </div>
             )
         }
