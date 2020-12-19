@@ -54,8 +54,7 @@ appServer.on('upgrade', (req, socket, head) => {
 
 const loginHost = process.env.LOGIN_HOST || 'http://localhost:5060';
 console.log(`Login server running on : ${loginHost}`);
-app.all('/api/loginserver*', (req,res) => {
-  console.log('request to login server...')
+app.all('/api/loginserver/*', (req,res) => {
   apiProxy.web(req, res, {target: loginHost});
 });
 
