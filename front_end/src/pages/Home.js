@@ -1,9 +1,10 @@
 // Create Homepage here
 import React from 'react';
-/*Listing Imports*/
+/*Components Imports*/
 import ListingCreationForm from '../components/ListingCreationForm';
 import Listings from '../components/Listings';
 import Login from '../components/Login';
+import Inquiries from '../components/Inquiries';
 import GetListings from '../components/GetListings';
 /*Bootstrap Imports*/
 import Navbar from 'react-bootstrap/Navbar';
@@ -19,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUserName, setIsLoggedIn } from '../redux/actions/userActions';
 import { setListings } from '../redux/actions/listingActions';
 import { setShowLCF } from '../redux/actions/modalActions';
+import { setShowMainDisplay } from '../redux/actions/showMainDisplay';
 
 const Home = () => {
     /*Redux variables*/
@@ -26,15 +28,14 @@ const Home = () => {
     const navSignInButtonTitle = isLoggedIn ? "Account" : "Log In";
     const userName = useSelector(state => state.userReducer.userName);
     const listings = useSelector(state => state.listingReducer.listings);
+    const showMainDisplay = useSelector(state => state.mainDisplayReducer.showMainDisplay);
     const showLCFModal = useSelector(state => state.modalReducer.showLCF);
     const dispatch = useDispatch();
-
-    const [loginmodalShow, setloginModalShow] = React.useState(false);  //  not implemented yet
 
     return (
         <div>
             <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-                <Navbar.Brand color="white">Ghetto eBay</Navbar.Brand>
+                <Navbar.Brand color="white" onClick={()=>dispatch(setShowMainDisplay("listings"))}>Ghetto eBay</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
                     <Nav className="justify-content-start mr-auto">
@@ -54,7 +55,9 @@ const Home = () => {
 
             <ListingCreationFormModal show={showLCFModal} onHide={() => {dispatch(setShowLCF(false))}} />
 
-            <Listings />
+            {(showMainDisplay==="listings") && <Listings />}
+            {(showMainDisplay==="inquiries") && <Inquiries />}
+            {(showMainDisplay==="my listings") && <Listings />}
         </div>
     );
 
@@ -71,7 +74,7 @@ const Home = () => {
                 <div className="text-center">
                     <NavDropdown.Item >Welcome : {userName}</NavDropdown.Item>
                     <NavDropdown.Item >My Listings</NavDropdown.Item>
-                    <NavDropdown.Item >Inquiries</NavDropdown.Item>
+                    <NavDropdown.Item onClick={()=>dispatch(setShowMainDisplay("inquiries"))}>Inquiries</NavDropdown.Item>
                     <Button onClick={() => {dispatch(setIsLoggedIn(false));dispatch(setUserName("Signed Out"))}}>Sign Out</Button>
                 </div>
             )

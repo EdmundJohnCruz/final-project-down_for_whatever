@@ -7,6 +7,7 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 
 const url = "/api/listingserver/editListing";
 const delURL = "/api/listingserver/:listing_id";
+const sendInquiryURL = "/api/inquiryserver/inquiry";
 
 const GetListing = ({ listing }) => {
 
@@ -14,8 +15,8 @@ const GetListing = ({ listing }) => {
 
   return (
     <Card border="secondary" style={{ margin: "15px", }}>
-      <Card.Header as="h4">&nbsp;{listing.title} 
-      <Breadcrumb.Item className="float-right small">Posted By: {listing.userid} </Breadcrumb.Item> 
+      <Card.Header as="h4">&nbsp;{listing.title}
+        <Breadcrumb.Item className="float-right small">Posted By: {listing.userid} </Breadcrumb.Item>
       </Card.Header>
       <Row className="no-gutters">
         <Col className="md-3 text-center">
@@ -34,9 +35,10 @@ const GetListing = ({ listing }) => {
     </Card>
   );
 
-  function MoreDetails (props) {
+  function MoreDetails(props) {
     const [lefmodalShow, setlefModalShow] = React.useState(false);
     const [delmodalShow, setdelModalShow] = React.useState(false);
+    const [inqmodalShow, setinqModalShow] = React.useState(false);
 
     return (
       <Modal {...props} size="lg" centered>
@@ -48,40 +50,99 @@ const GetListing = ({ listing }) => {
             <p>Listing Description : {listing.description} </p>
             <p>Listing Price : {listing.price} </p>
             <div>
-            <Button variant="secondary" onClick={() => 
-              console.log('Pain')
-              //setInquiryModalShow(true)
-            }> 
-              View Inquiries
+              <Button variant="secondary" onClick={() =>
+                setinqModalShow(true)
+              }>
+                Make Inquiry
             </Button>
-            <Button variant="secondary" onClick={() => 
-              setlefModalShow(true)
-            }>
-              Edit Post
-            </Button>  
-            <Button variant="secondary"  onClick={() =>
-              setdelModalShow(true)
-            }>Delete Post
+              <Button variant="secondary" onClick={() =>
+                console.log('Pain')
+              }>
+                View Inquiries
+            </Button>
+              <Button variant="secondary" onClick={() =>
+                setlefModalShow(true)
+              }>
+                Edit Post
+            </Button>
+              <Button variant="secondary" onClick={() =>
+                setdelModalShow(true)
+              }>Delete Post
             </Button>
             </div>
           </Modal.Body>
         </Modal.Header>
         <ListingEditingForm show={lefmodalShow} onHide={() => setlefModalShow(false)} />
         <DeleteForm show={delmodalShow} onHide={() => setdelModalShow(false)} />
+        <MakeInquiryForm show={inqmodalShow} onHide={() => setinqModalShow(false)} />
       </Modal>
     )
   }
 
-  function DeleteForm (props) {
+  function MakeInquiryForm(props) {
+    const [message, setMessage] = React.useState("");
+    const userName = useSelector(state => state.userReducer.userName);
+    const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
+
+    const sendInquiry = e => {
+      e.preventDefault();
+      const formattedMessage = `${userName} : ${message}`;
+      const inquiry = {
+        buyerId: userName,
+        sellerId: listing.userid,
+        listingId: listing._id,
+        listingTitle: listing.title,
+        message: [formattedMessage],
+      }
+      axios.post(sendInquiryURL, { inquiry: inquiry })
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+      console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(inquiry)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
+    };
+
+    if (isLoggedIn) {
+      return (
+        <Modal {...props} size="lg" centered>
+          <Modal.Header closeButton>
+            <Modal.Body>
+              <div className="ListingCreationForm">
+                <Form onSubmit={sendInquiry}>
+                  <h1>Send a message to {listing.userid} about {listing.title}</h1>
+
+                  <Form.Group>
+                    <Form.Control placeholder="Type your message here ..." as="textarea" rows={2} value={message} onChange={(e) => setMessage(e.target.value)} required />
+                  </Form.Group>
+
+                  <button type="submit" class="btn btn-primary float-right">Send</button>
+                </Form>
+              </div>
+            </Modal.Body>
+          </Modal.Header>
+        </Modal>
+      )
+    } else {
+      return (
+        <Modal {...props} size="md" centered>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              You must be logged in to make an inquiry.
+            </Modal.Title>
+          </Modal.Header>
+        </Modal>
+      )
+    }
+  }
+
+  function DeleteForm(props) {
 
     const userName = useSelector(state => state.userReducer.userName);
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
 
     const deleteListing = e => {
       axios.delete(`/api/listingserver/${listing._id}`)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
-    } 
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+    }
 
     if (isLoggedIn) {
       return (
@@ -99,95 +160,94 @@ const GetListing = ({ listing }) => {
     } else {
       return (
         <Modal {...props} size="md" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>
-                    You cannot delete this post.
+          <Modal.Header closeButton>
+            <Modal.Title>
+              You cannot delete this post.
             </Modal.Title>
-            </Modal.Header>
+          </Modal.Header>
         </Modal>
-    )
+      )
     }
-
   }
-  
-  function ListingEditingForm (props) {
-  
-  const [title, setTitle] = React.useState(listing.title);
-  const [description, setDescription] = React.useState(listing.description);
-  const [price, setPrice] = React.useState(listing.price);
-  
-  const userName = useSelector(state => state.userReducer.userName);
-  const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
-  
-  const editListing = e => {
-    e.preventDefault();
-    const data = {
+
+  function ListingEditingForm(props) {
+
+    const [title, setTitle] = React.useState(listing.title);
+    const [description, setDescription] = React.useState(listing.description);
+    const [price, setPrice] = React.useState(listing.price);
+
+    const userName = useSelector(state => state.userReducer.userName);
+    const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
+
+    const editListing = e => {
+      e.preventDefault();
+      const data = {
         userid: userName,
         title: title,
         description: description,
         price: price,
         _id: listing._id,
-    }
-    axios.post(url, { listing: data }) 
+      }
+      axios.post(url, { listing: data })
         .then(res => console.log(res))
         .catch(err => console.log(err));
-    console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
-  };
-  
+      console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
+    };
+
     if (isLoggedIn) {
-        return (
-            <Modal {...props} size="lg" centered>
-                <Modal.Header closeButton>
-                    <Modal.Body>
-                    <div className="ListingCreationForm">
-              <Form onSubmit={editListing}>
+      return (
+        <Modal {...props} size="lg" centered>
+          <Modal.Header closeButton>
+            <Modal.Body>
+              <div className="ListingCreationForm">
+                <Form onSubmit={editListing}>
                   <h1>Edit Current Listing</h1>
                   <Form.Group>
-                      <Form.Label class="font-weight-bold " >Title</Form.Label>
-                      <Form.Control id="title" type="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                    <Form.Label class="font-weight-bold " >Title</Form.Label>
+                    <Form.Control id="title" type="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
                   </Form.Group>
-  
+
                   <Form.Group>
-                      <Form.Label class="font-weight-bold">Description</Form.Label>
-                      <Form.Control id="description" type="description" as="textarea" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} required />
+                    <Form.Label class="font-weight-bold">Description</Form.Label>
+                    <Form.Control id="description" type="description" as="textarea" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} required />
                   </Form.Group>
-  
+
                   <Form.Group>
-                      <Form.Label class="font-weight-bold">Price</Form.Label>
-                      <InputGroup>
-                          <InputGroup.Prepend>
-                              <InputGroup.Text>$</InputGroup.Text>
-                          </InputGroup.Prepend>
-                          <FormControl id="price" type="number" value={price} step=".01" pattern="^\d+(?:\.\d{1,2})?$" onChange={(e) => setPrice(e.target.value)} required />
-                      </InputGroup>
+                    <Form.Label class="font-weight-bold">Price</Form.Label>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>$</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <FormControl id="price" type="number" value={price} step=".01" pattern="^\d+(?:\.\d{1,2})?$" onChange={(e) => setPrice(e.target.value)} required />
+                    </InputGroup>
                   </Form.Group>
-  
+
                   <Form.Group>
-                      <Form.Label class="font-weight-bold">Please Provide an Image for the Listing</Form.Label>
-                      <Form.File type="image" label="Upload your image here" custom />
+                    <Form.Label class="font-weight-bold">Please Provide an Image for the Listing</Form.Label>
+                    <Form.File type="image" label="Upload your image here" custom />
                   </Form.Group>
-  
+
                   <button type="submit" class="btn btn-primary float-right">Edit Listing</button>
-              </Form>
-          </div>
-                    </Modal.Body>
-                </Modal.Header>
-            </Modal>
-        )
-    }  else {
-        return (
-            <Modal {...props} size="lg" centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        You cannot edit this post.
+                </Form>
+              </div>
+            </Modal.Body>
+          </Modal.Header>
+        </Modal>
+      )
+    } else {
+      return (
+        <Modal {...props} size="lg" centered>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              You cannot edit this post.
                 </Modal.Title>
-                </Modal.Header>
-            </Modal>
-        )
+          </Modal.Header>
+        </Modal>
+      )
     }
   }
 
-} 
+}
 
 const mapStateToProps = state => ({
   dispatch: state.dispatch

@@ -4,6 +4,7 @@ import Home from './pages/Home.js';
 import SignUp from './pages/SignUp.js';
 //  testing
 import ListingCreationForm from './components/ListingCreationForm'
+import Inquiries from './components/Inquiries'
 
 const App = () => {
     return (
@@ -17,8 +18,8 @@ const App = () => {
             <Route path="/signup">
                 <SignUp />
             </Route>
-            <Route path="/lcf">
-                <ListingCreationForm />
+            <Route path="/inq">
+                <Inquiries />
             </Route>
         </Switch>
     );
