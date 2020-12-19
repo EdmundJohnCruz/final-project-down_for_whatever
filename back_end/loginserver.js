@@ -73,53 +73,59 @@ dbClient.connect((error) => {
           // set session values
           req.session.username = uname;
           req.session.userId = foundUser._id;
+          req.session.admin = foundUser.admin;
 
-          res.send({error: false, username: uname, userId: foundUser._id, message: 'login success'});
+          res.send({error: false, username: uname, admin: foundUser.admin, userId: foundUser._id, message: 'login success'});
         }
         else{
           console.log('login failed');
-          res.send({error: false, username: null, userId: null, message: 'login failed'});  
+          res.send({error: false, username: null, admin: false, userId: null, message: 'login failed'});  
         }
       })
       .catch((e) => {
         console.log("login dberror: ", e);
-        res.send({error: true, username: null, userId: null, message: 'error'});
+        res.send({error: true, username: null, admin: false, userId: null, message: 'error'});
       });  
     }
     else {
       console.log('bad request: ', req);
-      res.send({error: true, username: null, userId: null, message: 'bad login request, missing un&pw'});
+      res.send({error: true, username: null, admin: false, userId: null, message: 'bad login request, missing un&pw'});
     }
   });
 
   app.post('/api/loginserver/signup', (req, res) => {
     const uname = req.body.username;
     const pass = req.body.password;
+    const admin = req.body.admin;
+
+    const newUser = { username: uname, password: pass, admin: admin }
+
     if(uname && pass){
       usersCollection.find({username: uname})
       .toArray()
       .then((found) => {
         if(found === []){
-          usersCollection.insertOne(newListing, (err, dbRes) => {
+          usersCollection.insertOne(newUser, (err, dbRes) => {
             if(err) {
               console.log('db signup error: ', err);
-              res.send({error: true, username: null, userId: null, message: 'db error creating user account'});
+              res.send({error: true, username: null, admin: newUser.admin, userId: null, message: 'db error creating user account'});
             }
             else {
               req.session.username = uname;
               req.session.userId = dbRes.insertedId;    
-              res.send({error: false, username: uname, userId: dbRes.insertedId, message: 'signup success'});
+              req.session.admin = admin;
+              res.send({error: false, username: uname, admin: false, userId: dbRes.insertedId, message: 'signup success'});
             }
           })
         }
         else{
-          res.send({error: false, username: null, userId: null, message: 'name taken'});  
+          res.send({error: false, username: null, admin: false, userId: null, message: 'name taken'});  
         }
       })
     }
     else {
       console.log('bad request: ', req);
-      res.send({error: true, username: null, userId: null, message: 'bad login request, missing un&pw'});
+      res.send({error: true, username: null, admin: false, userId: null, message: 'bad login request, missing un&pw'});
     }
   });
 
