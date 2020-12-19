@@ -14,7 +14,7 @@ const InquiriesRecievedCard = ({ inquiry }) => {
         <div class="btn btn-block">
             <Card border="secondary" style={{ margin: "15px", }} onClick={handleShow}>
                 <Card.Header className="text-muted text-center small">Click anywhere to open this chat</Card.Header>
-                <Card.Body className="text-center"> <b>{inquiry.buyerId}</b> sent you an inquiry about your listing titled : <b>"{inquiry.listingTitle}"</b></Card.Body>
+                <Card.Body className="text-center"> <b>{inquiry.buyerName}</b> sent you an inquiry about your listing titled : <b>"{inquiry.listingTitle}"</b></Card.Body>
                 <Card.Footer className="text-muted text-center small"> Listing ID : {inquiry.listingId}</Card.Footer>
             </Card>
 
@@ -23,25 +23,25 @@ const InquiriesRecievedCard = ({ inquiry }) => {
     )
 
     function ChatRecievedModal(props) {
-        const [messageToSend, setMessageToSend] = React.useState(); //  both ends of the chat log are effected by this. (Wipes textarea)
+        const [messageToSend1, setMessageToSend1] = React.useState(); //  both ends of the chat log are effected by this. (Wipes textarea)
         const messages = inquiry.message;
 
         const sendMessage = e => {
             e.preventDefault();
             const data = {
                 userName: userName,
-                message: messageToSend,
+                message: messageToSend1,
                 _id: inquiry._id,
             }
             axios.post('/api/inquiryserver/reply', { body: data })
                 .then(res => console.log(res))
                 .catch(err => console.log(err));
-            setMessageToSend("");   //  might have problems with timing? like reseting before sending.
+            setMessageToSend1("");   //  might have problems with timing? like reseting before sending.
         };
 
         const handleChange = e => {
             e.preventDefault();
-            setMessageToSend(e.target.value);
+            setMessageToSend1(e.target.value);
         }
 
         return (
@@ -63,7 +63,7 @@ const InquiriesRecievedCard = ({ inquiry }) => {
                         <Modal.Body>
                             <Form className="block">
                                 <Form.Group>
-                                    <Form.Control placeholder="Type your message here ..." as="textarea" rows={2} value={messageToSend} onChange={handleChange} required />
+                                    <Form.Control placeholder="Type your message here ..." as="textarea" rows={2} value={messageToSend1} onChange={handleChange} required />
                                 </Form.Group>
                                 <button type="button" class="btn btn-primary float-right" onClick={sendMessage}>Send</button>
                                 <button type="button" class="btn btn-primary float-left" onClick={handleClose} formNoValidate>Close</button>

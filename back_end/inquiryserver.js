@@ -135,8 +135,9 @@ dbClient.connect((error) => {
     });
   });
 
-  app.get('/api/inquiryserver/sentInquiries/:current_user', (req, res) => {
+  app.get('/api/inquiryserver/sentInquiries/:current_user_id', (req, res) => {
     const current_user_id = req.params.current_user_id;
+    console.log(`\n\n~~~~~~~~~~~~~~~~~~~\n\n inside GET sentInquiries current user id : ${current_user_id}   \n\n~~~~~~~~~~~~~~~~~~~\n\n`);
     inquiryCollection.find({buyerId: current_user_id})
       .toArray()
       .then((docs) => {
@@ -148,8 +149,9 @@ dbClient.connect((error) => {
       });
   });
 
-  app.get('/api/inquiryserver/recievedInquiries/:current_user', (req, res) => {
+  app.get('/api/inquiryserver/recievedInquiries/:current_user_id', (req, res) => {
     const current_user_id = req.params.current_user_id;
+    console.log(`\n\n~~~~~~~~~~~~~~~~~~~\n\n inside GET recievedInquiries current user id : ${current_user_id}   \n\n~~~~~~~~~~~~~~~~~~~\n\n`);
     inquiryCollection.find({sellerId: current_user_id})
       .toArray()
       .then((docs) => {

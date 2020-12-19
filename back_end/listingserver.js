@@ -5,8 +5,8 @@ const {MongoClient, ObjectId} = require('mongodb');
 const cors = require('cors');
 const multer = require('multer');
 
-// const redis = require('redis');
-// // const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
+const redis = require('redis');
+const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
 
 // const auth = process.env.MONGO_AUTH;
 const auth = 'dfw:dfw123';
