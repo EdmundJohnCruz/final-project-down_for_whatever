@@ -15,7 +15,7 @@ const Login = () => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        /*axios.post('/api/login', { //grabbing username and password from DB
+        axios.post('/api/loginserver/login', { //grabbing username and password from DB
             username: '',
             password: '',
         })
@@ -23,19 +23,20 @@ const Login = () => {
                 console.log(res.data);
                 if (res.data.success) {
                     console.log("User successfully logged in.");
-                    dispatch(setUserName(username));
-                    dispatch(setIsLoggedIn(true));
+                        dispatch(setUserName(username));
+                        dispatch(setIsLoggedIn(true));
                 }
                 else {
-                    setError(res.data.error);
+                    console.log(res.data.message);
                 }
             })
-            .catch(() => {
-                setError("An error occured while attempting to login.");
+            /*.catch((error) => {
+                console.log('inside catch:')
+                console.log(error)
             });*/
 
-        dispatch(setUserName(username));
-        dispatch(setIsLoggedIn(true));
+        /*dispatch(setUserName(username));
+        dispatch(setIsLoggedIn(true));*/
     };
 
     return (
