@@ -111,7 +111,7 @@ dbClient.connect((error) => {
         res.status(500).send({'message': 'error: cant insert listing'});
       }
       console.log('inserted newListing: ', newListing);
-      // redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
+      redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
       res.send({'insertedId': dbRes.insertedId});
     });
   });
