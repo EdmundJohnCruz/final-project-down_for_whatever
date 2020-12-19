@@ -57,7 +57,7 @@ const SignUp = () => {
                 </div>
                 <div id="admincheckbox">
                     <input type="checkbox" id="admin" name="admin" value={localAdmin} onChange={e => setLocalAdmin(!localAdmin)} checked = {localAdmin} />
-                    <label for="admin"> Become an Admin? </label>
+                    <label htmlFor="admin"> Become an Admin? </label>
                 </div>
 
                 <div>

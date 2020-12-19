@@ -3,13 +3,11 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInquiries, setRecievedInquiries, setSentInquiries } from '../redux/actions/inquiryActions';
 import { connect } from 'react-redux';
-import { Card, Form, Modal } from 'react-bootstrap';
 import InquiriesSentCard from './InquiriesSentCard';
 import InquiriesRecievedCard from './InquiriesRecievedCard';
 
 const Inquiries = ({ inquiries }) => {
   const dispatch = useDispatch();
-  const userName = useSelector(state => state.userReducer.userName);
   const userId = useSelector(state => state.userReducer.userId);
   const sentInquiries = useSelector(state => state.inquiryReducer.sentInquiries);
   const recievedInquiries = useSelector(state => state.inquiryReducer.recievedInquiries);

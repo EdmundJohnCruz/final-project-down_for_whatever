@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
-import { FormControl, InputGroup, Button } from 'react-bootstrap';
-import { Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUserName, setIsLoggedIn, setAdmin } from '../redux/actions/userActions';
 
 
 const Login = () => {
     const [localUsername, setLocalUsername] = React.useState();
     const [password, setPassword] = React.useState(); //state based on user's inputted password
-    const [localAdmin, setLocalAdmin] = React.useState();
+    const [localAdmin] = React.useState();
     const dispatch = useDispatch();
 
     const handleSubmit = e => {
@@ -51,12 +50,12 @@ const Login = () => {
         <div className="Login">
             <Form onSubmit={handleSubmit} className="text-center" style={{ padding: "10px" }} >
                 <Form.Group>
-                    <Form.Label class="font-weight-bold">Username :</Form.Label>
+                    <Form.Label className="font-weight-bold">Username :</Form.Label>
                     <Form.Control id="username" type="username" placeholder="Username" onChange={(e) => setLocalUsername(e.target.value)} required />
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label class="font-weight-bold">Password :</Form.Label>
+                    <Form.Label className="font-weight-bold">Password :</Form.Label>
                     <Form.Control id="password" type="password" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
                 <Button type="submit" className="btn-primary float-center">Log In</Button>

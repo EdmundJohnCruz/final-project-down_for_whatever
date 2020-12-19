@@ -5,7 +5,6 @@ import ListingCreationForm from '../components/ListingCreationForm';
 import Listings from '../components/Listings';
 import Login from '../components/Login';
 import Inquiries from '../components/Inquiries';
-import GetListings from '../components/GetListings';
 /*Bootstrap Imports*/
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -18,7 +17,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /*Redux Imports*/
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserName, setIsLoggedIn } from '../redux/actions/userActions';
-import { setListings } from '../redux/actions/listingActions';
 import { setShowLCF } from '../redux/actions/modalActions';
 import { setShowMainDisplay } from '../redux/actions/showMainDisplay';
 
@@ -27,7 +25,6 @@ const Home = () => {
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
     const navSignInButtonTitle = isLoggedIn ? "Account" : "Log In";
     const userName = useSelector(state => state.userReducer.userName);
-    const listings = useSelector(state => state.listingReducer.listings);
     const showMainDisplay = useSelector(state => state.mainDisplayReducer.showMainDisplay);
     const showLCFModal = useSelector(state => state.modalReducer.showLCF);
     const dispatch = useDispatch();
@@ -46,7 +43,7 @@ const Home = () => {
                         </Form>
                     </Nav>
                     <Nav className="justify-content-end ml-auto">
-                        <NavDropdown alignRight title={navSignInButtonTitle} id="dropdown-menu-" menuAlign="right">
+                        <NavDropdown alignRight title={navSignInButtonTitle} id="dropdown-menu-" menualign="right">
                             <LoginOrSignout />
                         </NavDropdown>
                     </Nav>

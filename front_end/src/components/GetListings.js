@@ -1,12 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Card, Row, Col, Button, Modal, Form, FormControl, InputGroup, Breadcrumb, Badge } from 'react-bootstrap';
+import { Card, Row, Col, Button, Modal, Form, FormControl, InputGroup, Breadcrumb } from 'react-bootstrap';
 //import ListingCreationForm from './ListingCreationForm';
 //  redux imports
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 const url = "/api/listingserver/editListing";
-const delURL = "/api/listingserver/:listing_id";
 const sendInquiryURL = "/api/inquiryserver/inquiry";
 
 const GetListing = ({ listing }) => {
@@ -22,7 +21,7 @@ const GetListing = ({ listing }) => {
         <Col className="md-3 text-center">
           <Card.Img src="logo192.png" style={{ width: "100px", height: "100px" }} />
         </Col>
-        <Card.Body class="col-md-8" style={{ padding: "10px" }}>
+        <Card.Body className="col-md-8" style={{ padding: "10px" }}>
           <Card.Title>Description : </Card.Title>
           <Card.Text>{listing.description} </Card.Text>
           <Card.Subtitle className="text-muted">Tags : {listing.type}</Card.Subtitle>
@@ -114,7 +113,7 @@ const GetListing = ({ listing }) => {
                     <Form.Control placeholder="Type your message here ..." as="textarea" rows={2} value={message} onChange={(e) => setMessage(e.target.value)} required />
                   </Form.Group>
 
-                  <button type="submit" class="btn btn-primary float-right">Send</button>
+                  <button type="submit" className="btn btn-primary float-right">Send</button>
                 </Form>
               </div>
             </Modal.Body>
@@ -135,7 +134,6 @@ const GetListing = ({ listing }) => {
   }
 
   function DeleteForm(props) {
-    const userName = useSelector(state => state.userReducer.userName);
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
 
     const deleteListing = e => {
@@ -151,7 +149,7 @@ const GetListing = ({ listing }) => {
             <div className="delForm">
               <Form onSubmit={deleteListing}>
                 <h3>Are you sure you wish to delete this post?</h3>
-                <button type="submit" class="btn btn-secondary float-right">Yes</button>
+                <button type="submit" className="btn btn-secondary float-right">Yes</button>
               </Form>
             </div>
           </Modal.Header>
@@ -205,17 +203,17 @@ const GetListing = ({ listing }) => {
                 <Form onSubmit={editListing}>
                   <h1>Edit Current Listing</h1>
                   <Form.Group>
-                    <Form.Label class="font-weight-bold " >Title</Form.Label>
+                    <Form.Label className="font-weight-bold " >Title</Form.Label>
                     <Form.Control id="title" type="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
                   </Form.Group>
 
                   <Form.Group>
-                    <Form.Label class="font-weight-bold">Description</Form.Label>
+                    <Form.Label className="font-weight-bold">Description</Form.Label>
                     <Form.Control id="description" type="description" as="textarea" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} required />
                   </Form.Group>
 
                   <Form.Group>
-                    <Form.Label class="font-weight-bold">Price</Form.Label>
+                    <Form.Label className="font-weight-bold">Price</Form.Label>
                     <InputGroup>
                       <InputGroup.Prepend>
                         <InputGroup.Text>$</InputGroup.Text>
@@ -225,11 +223,11 @@ const GetListing = ({ listing }) => {
                   </Form.Group>
 
                   <Form.Group>
-                    <Form.Label class="font-weight-bold">Please Provide an Image for the Listing</Form.Label>
+                    <Form.Label className="font-weight-bold">Please Provide an Image for the Listing</Form.Label>
                     <Form.File type="image" label="Upload your image here" custom />
                   </Form.Group>
 
-                  <button type="submit" class="btn btn-primary float-right">Edit Listing</button>
+                  <button type="submit" className="btn btn-primary float-right">Edit Listing</button>
                 </Form>
               </div>
             </Modal.Body>
