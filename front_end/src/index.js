@@ -9,6 +9,7 @@ import App from './App.js';
 import './App.css';
 import {BrowserRouter} from 'react-router-dom';
 import {setListings} from './redux/actions/listingActions';
+import {updateChatMessagesById} from './redux/actions/inquiryActions';
 import axios from 'axios';
 import { Provider } from 'react-redux';
 
@@ -78,7 +79,12 @@ ws.onmessage = (ev) => {
   if(data.message === 'listingChange'){
     console.log('updating listings...');
     getListings(store.dispatch);
-  }
+  };
+  if(data.message === 'chatMessageSent'){
+    console.log('somebody sent someone a new message...');
+    store.dispatch(updateChatMessagesById(data._id, data.reply));
+  };
+
 };
 
 
