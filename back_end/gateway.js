@@ -52,17 +52,17 @@ appServer.on('upgrade', (req, socket, head) => {
   wsProxy.ws(req, socket, head);
 });
 
+const loginHost = process.env.LOGIN_HOST || 'http://localhost:5060';
+console.log(`Login server running on : ${loginHost}`);
+app.all('/api/loginserver/*', (req,res) => {
+  apiProxy.web(req, res, {target: loginHost});
+});
+
 const fronEndHost = process.env.FRONT_END_HOST || 'http://localhost:3000';
 console.log(`Front end proxies to: ${fronEndHost}`);
 app.all('/*', (req, res) => {
   // for frontend
   apiProxy.web(req, res, { target: fronEndHost });
-});
-
-const loginHost = process.env.LOGIN_HOST || 'http://localhost:5060';
-console.log(`Login server running on : ${loginHost}`);
-app.all('/api/loginserver/*', (req,res) => {
-  apiProxy.web(req, res, {target: loginHost});
 });
 
 appServer.listen(4000);

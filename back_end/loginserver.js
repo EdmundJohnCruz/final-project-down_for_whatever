@@ -20,7 +20,7 @@ const dbClient = new MongoClient(url);
 
 const store = new MongoDBStore({
   uri: urlSession,
-  collection: 'Sessions'
+  collection: 'sessions'
   },  (error) => {
     if(error){
       console.log('this is an error bc we cant connect to db for store');
