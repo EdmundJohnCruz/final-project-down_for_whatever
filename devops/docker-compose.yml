@@ -32,7 +32,7 @@ services:
     ports:
       - "5000:5000"
     deploy:
-      replicas: 2
+      replicas: 1
       restart_policy:
         condition: on-failure
     environment:
@@ -68,7 +68,7 @@ services:
     ports:
       - "5050:5050"
     deploy:
-      replicas: 2
+      replicas: 1
       restart_policy:
         condition: on-failure
     networks:
@@ -105,7 +105,7 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ADVERTISED_PORT: "9092"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+      KAFKA_HEAP_OPTS: "-Xmx16M -Xms16M"
     networks:
       - webnet
 networks:
