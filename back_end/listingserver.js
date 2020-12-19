@@ -5,13 +5,12 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
-let addrBuffer;
+const KafkaProducer = require('./kafka/KafkaProducer.js');
 
-const kafkaProducer = require('./kafka/KafkaProducer.js');
+let addrBuffer;
 const producer = new KafkaProducer('imgresize');
 
 const redis = require('redis');
-const KafkaProducer = require('./kafka/KafkaProducer.js');
 const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
 
 // const auth = process.env.MONGO_AUTH;

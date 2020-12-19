@@ -70,7 +70,22 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - webnet    
+      - webnet
+
+  kafkaworker:
+    image: dfw/kafkaworker
+    # ports:
+    #   - "xxx:xxx"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment: 
+      - KAFKA_WOKER=kafka:9092
+      - REDIS_HOST=redis
+    networks:
+      - webnet
+
   zookeeper:
     image: wurstmeister/zookeeper
     ports:

@@ -27,7 +27,7 @@ const dbClient = new MongoClient(url);
         const db = dbClient.db(dbName);
         const listingCollection = db.collection(listingCollectionName);
         img_id = new ObjectId(message);
-        let query = { "_id": img_id };
+        const query = { "_id": img_id };
         listingCollection.findOne(query)
           .then((doc) => {
               // console.log(doc._id);
