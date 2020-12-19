@@ -72,6 +72,10 @@ services:
         condition: on-failure
     networks:
       - webnet
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis  
   loginserver:
     image: dfw/loginserver
     ports:
