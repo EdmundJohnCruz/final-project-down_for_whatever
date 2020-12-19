@@ -21,7 +21,6 @@ const Listings = () => {
 
   React.useEffect(getListings, []);
 
-
   return (
     <div>
       <h1>Listings :</h1>

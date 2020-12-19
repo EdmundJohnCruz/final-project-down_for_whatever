@@ -1,54 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
-import { FormControl, InputGroup, Button } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { setUserName, setIsLoggedIn } from '../redux/actions/userActions';
+import { Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useDispatch } from 'react-redux';
+import { setUserName, setIsLoggedIn, setAdmin } from '../redux/actions/userActions';
 
 
 const Login = () => {
-    const [username, setUsername] = React.useState();
+    const [localUsername, setLocalUsername] = React.useState();
     const [password, setPassword] = React.useState(); //state based on user's inputted password
-    const [error, setError] = React.useState();
+    const [localAdmin] = React.useState();
     const dispatch = useDispatch();
 
     const handleSubmit = e => {
         e.preventDefault();
 
-        /*axios.post('/api/login', { //grabbing username and password from DB
-            username: '',
-            password: '',
+        axios.post('/api/loginserver/login', { //grabbing username and password from DB
+            username: localUsername,
+            password: password,
+            admin: localAdmin,
         })
             .then((res) => {
                 console.log(res.data);
-                if (res.data.success) {
-                    console.log("User successfully logged in.");
-                    dispatch(setUserName(username));
+                if (res.data.error !== true) {
+                    console.log("User successfully logged in. Username is "+ localUsername);
+                    dispatch(setUserName(localUsername, res.data.userId));
                     dispatch(setIsLoggedIn(true));
+                    if(localAdmin === true){
+                        dispatch(setAdmin(localAdmin));
+                    }
                 }
                 else {
-                    setError(res.data.error);
+                    console.log(res.data.message);
+                    /*return ( //displaying error as alert(?)
+                        <Modal size="lg" centered>
+                            <Modal.Header closeButton>
+                                <Modal.Title>
+                                {res.data.message}
+                                </Modal.Title>
+                            </Modal.Header>
+                        </Modal>
+                    )*/
                 }
             })
-            .catch(() => {
-                setError("An error occured while attempting to login.");
-            });*/
-
-        dispatch(setUserName(username));
-        dispatch(setIsLoggedIn(true));
     };
 
     return (
         <div className="Login">
             <Form onSubmit={handleSubmit} className="text-center" style={{ padding: "10px" }} >
                 <Form.Group>
-                    <Form.Label class="font-weight-bold">Username :</Form.Label>
-                    <Form.Control id="username" type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} required />
+                    <Form.Label className="font-weight-bold">Username :</Form.Label>
+                    <Form.Control id="username" type="username" placeholder="Username" onChange={(e) => setLocalUsername(e.target.value)} required />
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label class="font-weight-bold">Password :</Form.Label>
-                    <Form.Control id="username" type="username" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} />
+                    <Form.Label className="font-weight-bold">Password :</Form.Label>
+                    <Form.Control id="password" type="password" placeholder="Password" required onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
                 <Button type="submit" className="btn-primary float-center">Log In</Button>
             </Form>
