@@ -16,7 +16,7 @@ const GetListing = ({ listing }) => {
   return (
     <Card border="secondary" style={{ margin: "15px", }}>
       <Card.Header as="h4">&nbsp;{listing.title}
-        <Breadcrumb.Item className="float-right small">Posted By: {listing.userid} </Breadcrumb.Item>
+        <Breadcrumb.Item className="float-right small">Posted By: {listing.username} </Breadcrumb.Item>
       </Card.Header>
       <Row className="no-gutters">
         <Col className="md-3 text-center">
@@ -82,14 +82,17 @@ const GetListing = ({ listing }) => {
   function MakeInquiryForm(props) {
     const [message, setMessage] = React.useState("");
     const userName = useSelector(state => state.userReducer.userName);
+    const userId = useSelector(state => state.userReducer.userId);
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
 
     const sendInquiry = e => {
       e.preventDefault();
       const formattedMessage = `${userName} : ${message}`;
       const inquiry = {
-        buyerId: userName,
+        buyerId: userId,
+        buyerName: userName,
         sellerId: listing.userid,
+        sellerName: listing.username,
         listingId: listing._id,
         listingTitle: listing.title,
         message: [formattedMessage],
@@ -107,7 +110,7 @@ const GetListing = ({ listing }) => {
             <Modal.Body>
               <div className="ListingCreationForm">
                 <Form onSubmit={sendInquiry}>
-                  <h1>Send a message to {listing.userid} about {listing.title}</h1>
+                  <h1>Send a message to {listing.username} about {listing.title}</h1>
 
                   <Form.Group>
                     <Form.Control placeholder="Type your message here ..." as="textarea" rows={2} value={message} onChange={(e) => setMessage(e.target.value)} required />
@@ -134,7 +137,6 @@ const GetListing = ({ listing }) => {
   }
 
   function DeleteForm(props) {
-
     const userName = useSelector(state => state.userReducer.userName);
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
 
@@ -177,12 +179,14 @@ const GetListing = ({ listing }) => {
     const [price, setPrice] = React.useState(listing.price);
 
     const userName = useSelector(state => state.userReducer.userName);
+    const userId = useSelector(state => state.userReducer.userId);
     const isLoggedIn = useSelector(state => state.userReducer.isLoggedIn);
 
     const editListing = e => {
       e.preventDefault();
       const data = {
-        userid: userName,
+        userid: userId,
+        username: userName,
         title: title,
         description: description,
         price: price,

@@ -13,12 +13,14 @@ const ListingCreationForm = () => {
     const [price, setPrice] = React.useState();
     const [file, setFile] = React.useState();
     const userName = useSelector(state => state.userReducer.userName);
+    const userId = useSelector(state => state.userReducer.userId);
     const dispatch = useDispatch();
 
     const handleSubmit = e => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('userid',userName,);
+        formData.append('userid',userId,);
+        formData.append('username',userName,);
         formData.append('title',title,);
         formData.append('description',description,);
         formData.append('price',price,);

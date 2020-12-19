@@ -136,8 +136,8 @@ dbClient.connect((error) => {
   });
 
   app.get('/api/inquiryserver/sentInquiries/:current_user', (req, res) => {
-    const current_user = req.params.current_user;
-    inquiryCollection.find({buyerId: current_user})
+    const current_user_id = req.params.current_user_id;
+    inquiryCollection.find({buyerId: current_user_id})
       .toArray()
       .then((docs) => {
         res.send({ sentInquiries: docs })
@@ -149,8 +149,8 @@ dbClient.connect((error) => {
   });
 
   app.get('/api/inquiryserver/recievedInquiries/:current_user', (req, res) => {
-    const current_user = req.params.current_user;
-    inquiryCollection.find({sellerId: current_user})
+    const current_user_id = req.params.current_user_id;
+    inquiryCollection.find({sellerId: current_user_id})
       .toArray()
       .then((docs) => {
         res.send({ recievedInquiries: docs })

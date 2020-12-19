@@ -95,7 +95,8 @@ dbClient.connect((error) => {
     }
 
      const newListing = {
-       userId : req.session.userId,
+       userid : req.session.userId,
+       username: req.body.username,
        title : req.body.title,
        description : req.body.description,
        price : req.body.price,

@@ -10,6 +10,7 @@ import InquiriesRecievedCard from './InquiriesRecievedCard';
 const Inquiries = ({ inquiries }) => {
   const dispatch = useDispatch();
   const userName = useSelector(state => state.userReducer.userName);
+  const userId = useSelector(state => state.userReducer.userId);
   const sentInquiries = useSelector(state => state.inquiryReducer.sentInquiries);
   const recievedInquiries = useSelector(state => state.inquiryReducer.recievedInquiries);
 
@@ -44,7 +45,7 @@ const Inquiries = ({ inquiries }) => {
   };
 
   const getSentInquiries = () => {
-    axios.get(`/api/inquiryserver/sentInquiries/${userName}`)
+    axios.get(`/api/inquiryserver/sentInquiries/${userId}`)
       .then((res) => {
         console.log('updating sentInquiries: ', res.data)
         dispatch(setSentInquiries(res.data.sentInquiries));
@@ -56,7 +57,7 @@ const Inquiries = ({ inquiries }) => {
   };
 
   const getRecievedInquiries = () => {
-    axios.get(`/api/inquiryserver/recievedInquiries/${userName}`)
+    axios.get(`/api/inquiryserver/recievedInquiries/${userId}`)
       .then((res) => {
         console.log('updating recievedInquiries: ', res.data)
         dispatch(setRecievedInquiries(res.data.recievedInquiries));
