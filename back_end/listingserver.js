@@ -5,8 +5,8 @@ const {MongoClient, ObjectId} = require('mongodb');
 const cors = require('cors');
 const multer = require('multer');
 
-// const redis = require('redis');
-// // const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
+const redis = require('redis');
+const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
 
 // const auth = process.env.MONGO_AUTH;
 const auth = 'dfw:dfw123';
@@ -111,7 +111,7 @@ dbClient.connect((error) => {
         res.status(500).send({'message': 'error: cant insert listing'});
       }
       console.log('inserted newListing: ', newListing);
-      // redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
+      redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
       res.send({'insertedId': dbRes.insertedId});
     });
   });
