@@ -87,4 +87,6 @@ const dbClient = new MongoClient(url);
       dbClient.close();
 });
 
+
+console.log('connecting...');
 consumer.connect();
