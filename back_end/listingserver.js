@@ -181,7 +181,7 @@ dbClient.connect((error) => {
 
     const del_id = req.params.listing_id;
     const query = { "_id": ObjectId(del_id),  };
-    const filter = req.session.admin ? {_id: listingIdToEdit } : {_id: listingIdToEdit, userId: req.session.userId};
+    const filter = req.session.admin ? {_id: del_id } : {_id: del_id, userId: req.session.userId};
 
     // delete listing with ID listingID
     listingCollection.deleteOne(query, function(err, dbRes)  {
