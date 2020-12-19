@@ -2,8 +2,16 @@ const express = require('express');
 const {MongoClient, ObjectId} = require('mongodb');
 const cors = require('cors');
 const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+const bodyParser = require('body-parser');
+let addrBuffer;
+
+const kafkaProducer = require('./kafka/KafkaProducer.js');
+const producer = new KafkaProducer('imgresize');
 
 const redis = require('redis');
+const KafkaProducer = require('./kafka/KafkaProducer.js');
 const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
 
 // const auth = process.env.MONGO_AUTH;
@@ -11,6 +19,7 @@ const auth = 'dfw:dfw123';
 const dbName = '667Final';
 const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&w=majority`;
 const listingCollectionName = 'Listings';
+
 
 const dbClient = new MongoClient(url);
 
@@ -21,15 +30,22 @@ var storage = multer.diskStorage({
   filename: function (req, file, cb) {
     //console.log(req.body);
     console.log(file);
-    cb(null, file.originalname);
+    addrBuffer = file.originalname + '-' + Date.now() + '.jpg';
+    cb(null, addrBuffer);
   }
-})
+});
 
 var upload = multer({ storage: storage });
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
+// Set EJS as templating engine 
+app.set("view engine", "ejs");
 
 dbClient.connect((error) => {
   if(error) {
@@ -51,19 +67,23 @@ dbClient.connect((error) => {
           res.send({listings: docs})
       })
       .catch((e) => {
-          console.log("error: ", e);
+          //console.log("error: ", e);
           res.send('FAILED');
       });
   });
 
   app.post('/api/listingserver/listing', upload.single('image'), (req, res, next) => {
-    console.log(req.body);
+    console.log(req.file);
      const newListing = {
        userid : req.body.userid,
        title : req.body.title,
        description : req.body.description,
        price : req.body.price,
-       imgaddr : req.file.filename,
+       og_img : {
+         data: fs.readFileSync(path.join('./uploads/'+ addrBuffer)),
+         contentType: 'image/png',
+         name: addrBuffer,
+       },
        timestamp : new Date(),
      };
     listingCollection.insertOne(newListing, (err, dbRes) => {
@@ -73,6 +93,7 @@ dbClient.connect((error) => {
         console.log(err);
         res.status(500).send({'message': 'error: cant insert listing'});
       }
+      producer.send(dbRes.insertedId);
       console.log('inserted newListing: ', newListing);
       redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
       res.send({'insertedId': dbRes.insertedId});
