@@ -2,6 +2,9 @@ const express = require('express');
 const { MongoClient, ObjectID } = require('mongodb');
 const cors = require('cors');
 
+const redis = require('redis');
+const redisClient = redis.createClient({ host: process.env.REDIS_HOST || 'localhost' });
+
 const auth = 'dfw:dfw123';
 const dbName = '667Final';
 const url = `mongodb+srv://${auth}@cluster0.gefuv.mongodb.net/?retryWrites=true&w=majority`;
@@ -95,8 +98,11 @@ dbClient.connect((error) => {
         console.log('inquiryID: ', chat_id);
         console.log(err);
         res.status(500).send({ 'message': 'Error: could not send the message' });
+      } else {
+        console.log('Inside /api/inquiryserver/reply');
+        redisClient.publish('wsMessage', JSON.stringify({ 'message': 'chatMessageSent', '_id': chat_id, 'reply': formattedMessage }));
       }
-      console.log(dbRes);
+      console.log(dbRes.result);
     });
   });
 

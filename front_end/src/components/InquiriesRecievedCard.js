@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Form, Card, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -18,12 +18,12 @@ const InquiriesRecievedCard = ({ inquiry }) => {
                 <Card.Footer className="text-muted text-center small"> Listing ID : {inquiry.listingId}</Card.Footer>
             </Card>
 
-            <ChatRecievedModal show={showChatRecieved} onHide={handleClose} />
+            <ChatRecievedModal show={showChatRecieved} onHide={handleClose} animation={false}/>
         </div>
     )
 
     function ChatRecievedModal(props) {
-        const [messageToSend, setMessageToSend] = React.useState();
+        const [messageToSend, setMessageToSend] = React.useState(); //  both ends of the chat log are effected by this. (Wipes textarea)
         const messages = inquiry.message;
 
         const sendMessage = e => {
@@ -36,7 +36,6 @@ const InquiriesRecievedCard = ({ inquiry }) => {
             axios.post('/api/inquiryserver/reply', { body: data })
                 .then(res => console.log(res))
                 .catch(err => console.log(err));
-            console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(data)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
             setMessageToSend("");   //  might have problems with timing? like reseting before sending.
         };
 
@@ -51,8 +50,8 @@ const InquiriesRecievedCard = ({ inquiry }) => {
                     <Modal.Header closeButton>
                         <Modal.Title>{inquiry.listingTitle}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <div style={{ padding: "10px", backgroundColor: "lightgrey", border : "3px solid black", borderRadius: "10px" }}>
+                    <Modal.Body block>
+                        <div style={{ padding: "10px", backgroundColor: "lightgrey", border : "3px solid black", borderRadius: "15px 0px 0px 15px", overflowY: "scroll", maxHeight: "50vh"}}>
                             {Array.from(messages).map(message => {
                                 return (
                                     <p>{message}</p>
