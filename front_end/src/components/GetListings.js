@@ -11,6 +11,9 @@ const sendInquiryURL = "/api/inquiryserver/inquiry";
 const GetListing = ({ listing }) => {
 
   const [moreDetailsModalShow, setMoreDetailsModalShow] = React.useState(false);
+  function hexToBase64(str) {
+    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
+  }
 
   return (
     <Card border="secondary" style={{ margin: "15px", }}>
@@ -19,7 +22,7 @@ const GetListing = ({ listing }) => {
       </Card.Header>
       <Row className="no-gutters">
         <Col className="md-3 text-center">
-          <Card.Img src="logo192.png" style={{ width: "100px", height: "100px" }} />
+          <Card.Img src={"data:image/jpeg;base64,"+hexToBase64(listing.smaller_img[0].data)} style={{ width: "100px", height: "100px" }} />
         </Col>
         <Card.Body className="col-md-8" style={{ padding: "10px" }}>
           <Card.Title>Description : </Card.Title>
@@ -112,7 +115,9 @@ const GetListing = ({ listing }) => {
                   <Form.Group>
                     <Form.Control placeholder="Type your message here ..." as="textarea" rows={2} value={message} onChange={(e) => setMessage(e.target.value)} required />
                   </Form.Group>
-
+                  <Card>
+                    <Card.Img src={"data:image/jpeg;base64,"+hexToBase64(listing.small_img[0].data)} style={{ width: "100px", height: "100px" }} />
+                  </Card>
                   <button type="submit" className="btn btn-primary float-right">Send</button>
                 </Form>
               </div>
@@ -224,6 +229,7 @@ const GetListing = ({ listing }) => {
 
                   <Form.Group>
                     <Form.Label className="font-weight-bold">Please Provide an Image for the Listing</Form.Label>
+
                     <Form.File type="image" label="Upload your image here" custom />
                   </Form.Group>
 
