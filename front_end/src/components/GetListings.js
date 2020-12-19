@@ -56,11 +56,6 @@ const GetListing = ({ listing }) => {
                 Make Inquiry
             </Button>
               <Button variant="secondary" onClick={() =>
-                console.log('Pain')
-              }>
-                View Inquiries
-            </Button>
-              <Button variant="secondary" onClick={() =>
                 setlefModalShow(true)
               }>
                 Edit Post
@@ -74,7 +69,7 @@ const GetListing = ({ listing }) => {
         </Modal.Header>
         <ListingEditingForm show={lefmodalShow} onHide={() => setlefModalShow(false)} />
         <DeleteForm show={delmodalShow} onHide={() => setdelModalShow(false)} />
-        <MakeInquiryForm show={inqmodalShow} onHide={() => setinqModalShow(false)} />
+        <MakeInquiryForm show={inqmodalShow} onHide={() => setinqModalShow(false)} setinqModalShow={setinqModalShow} />
       </Modal>
     )
   }
@@ -98,7 +93,10 @@ const GetListing = ({ listing }) => {
         message: [formattedMessage],
       }
       axios.post(sendInquiryURL, { inquiry: inquiry })
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res);
+          props.setinqModalShow(false);
+        })
         .catch(err => console.log(err));
       console.log(`\n\n~~~~~~~~~~~~~~~~~~~~\n\n Data : ${JSON.stringify(inquiry)} \n\n~~~~~~~~~~~~~~~~~~~~\n\n`);
     };

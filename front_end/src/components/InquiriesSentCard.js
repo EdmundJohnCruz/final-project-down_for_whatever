@@ -14,7 +14,7 @@ const InquiriesSentCard = ({ inquiry }) => {
         <div class="btn btn-block">
             <Card border="secondary" style={{ margin: "15px", }} onClick={handleShow}>
                 <Card.Header className="text-muted text-center small">Click anywhere to open this chat...</Card.Header>
-                <Card.Body className="text-center">You made an inquiry about <b>"{inquiry.listingTitle}"</b> to seller : {inquiry.sellerName} </Card.Body>
+                <Card.Body className="text-center">You made an inquiry about <b>"{inquiry.listingTitle}"</b> to seller : <b>{inquiry.sellerName}</b> </Card.Body>
                 <Card.Footer className="text-muted text-center small"> Listing ID : {inquiry.listingId}</Card.Footer>
             </Card>
 
