@@ -55,6 +55,38 @@ dbClient.connect((error) => {
     });
   });
 
+<<<<<<< Updated upstream
+=======
+  // add automatic updates
+  app.post('/api/listingserver/editListing', (req, res) => {
+    const listingData = req.body.listing;
+    const listingIdToEdit = ObjectId(listingData._id);
+    const filter = {_id: listingIdToEdit};
+    listingData.timestamp = new Date();
+    
+    const newListingData = {
+      title: listingData.title,
+      description: listingData.description,
+      price: listingData.price,
+    }
+
+    listingCollection.updateOne(filter, {$set :newListingData}, (err, dbRes) => { //Make new obj that replaces items inside of listing data
+      
+      if(err) {
+        console.log(`error! can\'t edit ${listingIdToEdit}`);
+        console.log('listingData: ', listingData);
+        console.log(err);
+        res.status(500).send({'message': 'error: could not edit listing'});
+      } else {
+        console.log('edited listingID: ', listingIdToEdit);
+        console.log('listingData: ', listingData);
+        redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
+        res.send({'editedId': listingIdToEdit});
+      }
+    });
+  });
+
+>>>>>>> Stashed changes
   app.delete('/api/listingserver/:listing_id', (req, res) => {
     const del_id = req.params.listing_id;
     var query = { "_id": ObjectID(del_id)};
@@ -67,7 +99,9 @@ dbClient.connect((error) => {
         res.status(500).send({'message': 'error: cannot delete listing'});
       }
     });
+    redisClient.publish('wsMessage', JSON.stringify({ 'message': 'listingChange' }));
     console.log('delete called, id: ', del_id);
+    res.send({'deletedId': del_id});
   });
 
   app.listen(5000, () => console.log('App listening on port 5000'));
